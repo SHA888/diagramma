@@ -261,6 +261,134 @@ pub mod flowchart {
     }
 }
 
+/// Arrow routing utilities.
+pub mod routing {
+    use crate::Point;
+
+    /// Route an edge with L-bend (horizontal-then-vertical).
+    ///
+    /// # Arguments
+    /// * `from` - Starting point
+    /// * `to` - Ending point
+    ///
+    /// # Returns
+    /// Vector of points forming the path.
+    #[must_use]
+    pub fn l_bend_h_then_v(from: Point, to: Point) -> Vec<Point> {
+        let mid_x = f64::midpoint(from.x, to.x);
+        vec![from, Point::new(mid_x, from.y), Point::new(mid_x, to.y), to]
+    }
+
+    /// Route an edge with L-bend (vertical-then-horizontal).
+    ///
+    /// # Arguments
+    /// * `from` - Starting point
+    /// * `to` - Ending point
+    ///
+    /// # Returns
+    /// Vector of points forming the path.
+    #[must_use]
+    pub fn l_bend_v_then_h(from: Point, to: Point) -> Vec<Point> {
+        let mid_y = f64::midpoint(from.y, to.y);
+        vec![from, Point::new(from.x, mid_y), Point::new(to.x, mid_y), to]
+    }
+
+    /// Route an edge with direct straight line.
+    ///
+    /// # Arguments
+    /// * `from` - Starting point
+    /// * `to` - Ending point
+    ///
+    /// # Returns
+    /// Vector of points forming the path.
+    #[must_use]
+    pub fn direct(from: Point, to: Point) -> Vec<Point> {
+        vec![from, to]
+    }
+}
+
+/// Structural layout (tree packing for containers).
+pub mod structural {
+    use crate::{LayoutContainer, LayoutResult};
+    use diagramma_core::{Container, NodeId, StructuralSpec};
+    use std::collections::HashMap;
+
+    /// Compute structural layout from a validated spec.
+    ///
+    /// # Arguments
+    /// * `spec` - Validated structural specification
+    /// * `inner_padding` - Padding inside containers (default 24px)
+    /// * `text_padding` - Padding from text to edge (default 12px)
+    ///
+    /// # Returns
+    /// Positioned layout with containers and edges.
+    #[must_use]
+    #[allow(clippy::cast_precision_loss)]
+    pub fn layout(spec: &StructuralSpec, inner_padding: f64, text_padding: f64) -> LayoutResult {
+        let mut result = LayoutResult::new();
+
+        if spec.containers.is_empty() {
+            result.set_viewbox(40.0, 0.0, 640.0, 100.0);
+            return result;
+        }
+
+        let mut positions: HashMap<NodeId, (f64, f64, f64, f64)> = HashMap::new();
+        let mut max_x: f64 = 0.0;
+        let mut max_y: f64 = 0.0;
+
+        let mut y_offset = 40.0;
+        for container in &spec.containers {
+            let (width, height) = compute_container_size(container, inner_padding, text_padding);
+            let x = 40.0;
+
+            positions.insert(container.id.clone(), (x, y_offset, width, height));
+
+            max_x = max_x.max(x + width);
+            max_y = max_y.max(y_offset + height);
+
+            y_offset += height + inner_padding;
+        }
+
+        for (container_id, (x, y, width, height)) in &positions {
+            result.containers.insert(
+                container_id.clone(),
+                LayoutContainer {
+                    id: container_id.clone(),
+                    x: *x,
+                    y: *y,
+                    width: *width,
+                    height: *height,
+                    children: Vec::new(),
+                },
+            );
+        }
+
+        result.set_viewbox(40.0, 0.0, 640.0, (max_y + 40.0).max(100.0));
+        result
+    }
+
+    #[allow(clippy::cast_precision_loss)]
+    fn compute_container_size(
+        container: &Container,
+        inner_padding: f64,
+        text_padding: f64,
+    ) -> (f64, f64) {
+        let label_width = (container.label.len() as f64) * 8.0 + 2.0 * text_padding;
+        let width = label_width.max(100.0) + 2.0 * inner_padding;
+
+        let num_children = container.children.len() as f64;
+        let child_height = if num_children > 0.0 {
+            num_children * 60.0 + (num_children - 1.0) * inner_padding
+        } else {
+            0.0
+        };
+
+        let height = 40.0 + child_height + 2.0 * inner_padding;
+
+        (width, height)
+    }
+}
+
 /// Text measurement and box sizing utilities.
 pub mod text {
     /// Font metrics for text measurement.
