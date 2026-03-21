@@ -22,7 +22,10 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const required = ["Rust CI", "TypeScript CI"];
+            const required = [
+              { job: "rust", label: "Rust CI" },
+              { job: "ts", label: "TypeScript CI" },
+            ];
             const {owner, repo} = context.repo;
             const response = await github.paginate(github.rest.checks.listForRef, {
               owner,
@@ -33,22 +36,23 @@ jobs:
 
             const results = {};
             for (const run of response) {
-              if (!required.includes(run.name)) continue;
+              const req = required.find(r => r.job === run.name);
+              if (!req) continue;
               if (!run.completed_at || run.status !== "completed") continue;
-              const existing = results[run.name];
+              const existing = results[req.job];
               if (!existing || new Date(run.completed_at) > new Date(existing.completed_at)) {
-                results[run.name] = run;
+                results[req.job] = run;
               }
             }
 
-            for (const name of required) {
-              const result = results[name];
+            for (const {job, label} of required) {
+              const result = results[job];
               if (!result) {
-                core.setFailed(`Required workflow "${name}" has not completed for this commit.`);
+                core.setFailed(`Required workflow "${label}" has not completed for this commit.`);
                 return;
               }
               if (result.conclusion !== "success") {
-                core.setFailed(`Required workflow "${name}" did not succeed (conclusion: ${result.conclusion}).`);
+                core.setFailed(`Required workflow "${label}" did not succeed (conclusion: ${result.conclusion}).`);
                 return;
               }
             }
