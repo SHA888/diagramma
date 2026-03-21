@@ -22,23 +22,24 @@
   - [x] `TODO.md` — this file
   - [x] `ARCHITECTURE.md` — system design and data flow
   - [x] `README.md` per crate and package (8 total)
-  - [ ] `CONTRIBUTING.md` — contribution guidelines, DCO sign-off
-  - [ ] `CODE_OF_CONDUCT.md`
-  - [ ] `CHANGELOG.md` — initialize with Keep a Changelog format
-  - [ ] `.github/ISSUE_TEMPLATE/` — bug report, feature request
-  - [ ] `.github/PULL_REQUEST_TEMPLATE.md`
-- [ ] **CI/CD**
-  - [ ] GitHub Actions: Rust CI (check, clippy, fmt, test) on `main` + PRs
-  - [ ] GitHub Actions: TypeScript CI (typecheck, lint, test) on `main` + PRs
-  - [ ] GitHub Actions: publish workflow (crates.io + npm) on tag push
-  - [ ] Dependabot or Renovate configuration
-- [ ] **Tooling**
-  - [ ] `rustfmt.toml` — project formatting rules
-  - [ ] `clippy.toml` — lint configuration (if overrides needed)
-  - [ ] `.editorconfig`
-  - [ ] ESLint + Prettier config for TypeScript packages
-  - [ ] `tsconfig.base.json` — shared TypeScript config
-  - [ ] Turborepo or custom build orchestration (Rust → WASM → TS)
+  - [x] `CONTRIBUTING.md` — contribution guidelines, DCO sign-off
+  - [x] `CODE_OF_CONDUCT.md`
+  - [x] `CHANGELOG.md` — initialize with Keep a Changelog format
+  - [x] `.github/ISSUE_TEMPLATE/` — bug report, feature request
+  - [x] `.github/PULL_REQUEST_TEMPLATE.md`
+- [x] **CI/CD**
+  - [x] GitHub Actions: Rust CI (check, clippy, fmt, test) on `main` + PRs
+  - [x] GitHub Actions: TypeScript CI (typecheck, lint, test) on `main` + PRs
+  - [x] GitHub Actions: publish workflow (crates.io + npm) on tag push
+  - [x] Dependabot or Renovate configuration
+- [x] **Tooling**
+  - [x] `rustfmt.toml` — project formatting rules
+  - [x] `clippy.toml` — lint configuration (if overrides needed)
+  - [x] `.editorconfig`
+  - [x] ESLint + Prettier config for TypeScript packages
+  - [x] `tsconfig.base.json` — shared TypeScript config
+  - [x] Turborepo or custom build orchestration (Rust → WASM → TS)
+  - [x] pre-commit hooks (lint, format, typecheck) for both Rust and TypeScript
 
 ---
 

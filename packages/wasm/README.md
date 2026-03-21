@@ -37,13 +37,13 @@ const svg = renderSvg(spec); // returns SVG string
 
 ## API
 
-| Function | Input | Output |
-|---|---|---|
-| `init()` | — | Loads WASM binary. Call once before other functions. |
-| `validateSpec(json)` | Spec JSON string | Validation errors or null |
-| `layoutSpec(json)` | Spec JSON string | Layout result as JSON |
-| `renderSvg(json)` | Spec JSON string | Complete SVG string |
-| `renderSvgWithOptions(json, options)` | Spec + options JSON | SVG with theme/size overrides |
+| Function                              | Input               | Output                                               |
+| ------------------------------------- | ------------------- | ---------------------------------------------------- |
+| `init()`                              | —                   | Loads WASM binary. Call once before other functions. |
+| `validateSpec(json)`                  | Spec JSON string    | Validation errors or null                            |
+| `layoutSpec(json)`                    | Spec JSON string    | Layout result as JSON                                |
+| `renderSvg(json)`                     | Spec JSON string    | Complete SVG string                                  |
+| `renderSvgWithOptions(json, options)` | Spec + options JSON | SVG with theme/size overrides                        |
 
 ## Build
 

@@ -16,21 +16,21 @@ Diagramma is a three-layer system:
 
 **Rust core** (compiled to WASM for browser use):
 
-| Crate | Purpose |
-|---|---|
-| [`diagramma-core`](crates/diagramma-core/) | Type definitions, spec validation, serialization |
+| Crate                                          | Purpose                                                            |
+| ---------------------------------------------- | ------------------------------------------------------------------ |
+| [`diagramma-core`](crates/diagramma-core/)     | Type definitions, spec validation, serialization                   |
 | [`diagramma-layout`](crates/diagramma-layout/) | Auto-layout algorithms — hierarchical, tree packing, arrow routing |
-| [`diagramma-svg`](crates/diagramma-svg/) | Layout result → themed, accessible SVG output |
+| [`diagramma-svg`](crates/diagramma-svg/)       | Layout result → themed, accessible SVG output                      |
 
 **TypeScript packages** (browser/Node.js):
 
-| Package | Purpose |
-|---|---|
-| [`@diagramma/wasm`](packages/wasm/) | WASM bridge — Rust core in the browser |
-| [`@diagramma/theme`](packages/theme/) | Design tokens, color ramps, CSS variables |
-| [`@diagramma/react`](packages/react/) | `<Diagram spec={...} />` React component |
-| [`@diagramma/bridge`](packages/bridge/) | LLM conversation ↔ diagram integration |
-| [`diagramma`](packages/diagramma/) | Umbrella package |
+| Package                                 | Purpose                                   |
+| --------------------------------------- | ----------------------------------------- |
+| [`@diagramma/wasm`](packages/wasm/)     | WASM bridge — Rust core in the browser    |
+| [`@diagramma/theme`](packages/theme/)   | Design tokens, color ramps, CSS variables |
+| [`@diagramma/react`](packages/react/)   | `<Diagram spec={...} />` React component  |
+| [`@diagramma/bridge`](packages/bridge/) | LLM conversation ↔ diagram integration   |
+| [`diagramma`](packages/diagramma/)      | Umbrella package                          |
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed system design and data flow.
 

@@ -1,7 +1,7 @@
 {
   "name": "@diagramma/bridge",
   "version": "0.0.1",
-  "description": "Conversation bridge for diagramma \u2014 LLM context ingestion, click callbacks, streaming",
+  "description": "Conversation bridge for diagramma — LLM context ingestion, click callbacks, streaming",
   "author": "Kresna Sucandra (https://github.com/SHA888)",
   "license": "(MIT OR Apache-2.0)",
   "repository": {

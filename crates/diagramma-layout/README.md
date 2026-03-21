@@ -13,12 +13,12 @@ This crate contains the computationally intensive parts of the pipeline — it's
 
 ## Layout Algorithms
 
-| Diagram Type | Algorithm | Description |
-|---|---|---|
-| Flowchart | Sugiyama-style hierarchical | Layer assignment → crossing minimization → coordinate assignment |
-| Structural | Recursive tree packing | Leaf-to-root sizing → root-to-leaf coordinate assignment |
-| Illustrative | Constraint-based freeform | Zone definitions + annotation placement (planned) |
-| Interactive | Delegates to base type | Uses flowchart or structural layout for the underlying diagram |
+| Diagram Type | Algorithm                   | Description                                                      |
+| ------------ | --------------------------- | ---------------------------------------------------------------- |
+| Flowchart    | Sugiyama-style hierarchical | Layer assignment → crossing minimization → coordinate assignment |
+| Structural   | Recursive tree packing      | Leaf-to-root sizing → root-to-leaf coordinate assignment         |
+| Illustrative | Constraint-based freeform   | Zone definitions + annotation placement (planned)                |
+| Interactive  | Delegates to base type      | Uses flowchart or structural layout for the underlying diagram   |
 
 ## Layout Constraints
 

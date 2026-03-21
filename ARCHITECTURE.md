@@ -61,6 +61,7 @@ JSON spec ──→ Validated spec ──→ Layout result ──→ SVG string
 Input: JSON string conforming to the DiagramSpec schema.
 
 Operations:
+
 - Deserialize into typed Rust structs (serde)
 - Validate referential integrity (edges reference existing nodes)
 - Validate constraints (no duplicate IDs, nesting depth limits)
@@ -73,6 +74,7 @@ Output: `DiagramSpec` enum — one of `Flowchart`, `Structural`, `Illustrative`,
 Input: Validated `DiagramSpec`.
 
 Operations (algorithm depends on diagram type):
+
 - **Flowchart** — hierarchical layered layout (Sugiyama-style):
   1. Cycle removal (reverse back-edges)
   2. Layer assignment (longest path)
@@ -86,6 +88,7 @@ Operations (algorithm depends on diagram type):
 - **Interactive** — delegates to one of the above for the base diagram
 
 All algorithms apply these constraints:
+
 - ViewBox width: 680px, safe area x=40..640
 - Box sizing: `width = max(title_chars × 8, subtitle_chars × 7) + 24`
 - Minimum spacing: 60px between boxes
@@ -99,6 +102,7 @@ Output: `LayoutResult` — every element has x, y, width, height; every edge has
 Input: `LayoutResult` + theme selection (light/dark/auto).
 
 Operations:
+
 - Generate `<style>` block with CSS variables for selected theme
 - Render containers (background rects with labels)
 - Render edges (paths with `fill="none"`, 0.5px stroke, open chevron markers)
@@ -271,6 +275,7 @@ Layout algorithms are computationally intensive (graph traversal, crossing minim
 ### Why not use an existing layout library?
 
 Evaluated options:
+
 - **dagre** (JS) — unmaintained since 2018, poor TypeScript support, can't run in Rust
 - **ELK** (Java/JS) — heavy runtime (~400KB), overkill for our constrained layout model
 - **petgraph** (Rust) — graph data structure only, no layout algorithms
@@ -281,6 +286,7 @@ The layout requirements are specific enough (fixed viewBox, design system constr
 ### Why separate SVG generation from layout?
 
 Separation of concerns: layout computes geometry (numbers), SVG generation produces markup (strings). This allows:
+
 - Testing layout correctness without parsing SVG
 - Swapping SVG output for other formats later (Canvas, PDF)
 - Independent optimization of each stage

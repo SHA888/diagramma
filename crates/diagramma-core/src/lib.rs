@@ -4,6 +4,7 @@
 //! used across the diagramma rendering pipeline.
 
 /// Library version.
+#[must_use]
 pub fn version() -> &'static str {
     env!("CARGO_PKG_VERSION")
 }

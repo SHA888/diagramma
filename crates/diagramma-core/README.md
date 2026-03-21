@@ -16,12 +16,12 @@ This crate defines the **data model** only. It has no layout logic and no render
 
 ## Diagram Types
 
-| Type | Description |
-|---|---|
-| `FlowchartSpec` | Sequential processes, decisions, data flow. Nodes + directed edges. |
-| `StructuralSpec` | Containment/nesting. Recursive containers with children. |
-| `IllustrativeSpec` | Freeform shapes, spatial metaphors, annotations. |
-| `InteractiveSpec` | Base diagram + UI controls (sliders, toggles) with state bindings. |
+| Type               | Description                                                         |
+| ------------------ | ------------------------------------------------------------------- |
+| `FlowchartSpec`    | Sequential processes, decisions, data flow. Nodes + directed edges. |
+| `StructuralSpec`   | Containment/nesting. Recursive containers with children.            |
+| `IllustrativeSpec` | Freeform shapes, spatial metaphors, annotations.                    |
+| `InteractiveSpec`  | Base diagram + UI controls (sliders, toggles) with state bindings.  |
 
 ## Key Types
 

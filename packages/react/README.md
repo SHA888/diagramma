@@ -47,16 +47,16 @@ function App() {
 
 ## Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `spec` | `DiagramSpec` | *required* | Diagram specification object |
-| `theme` | `'light' \| 'dark' \| 'auto'` | `'auto'` | Color theme |
-| `onNodeClick` | `(nodeId: string) => void` | — | Click callback |
-| `onNodeHover` | `(nodeId: string \| null) => void` | — | Hover callback (null on leave) |
-| `className` | `string` | — | CSS class on wrapper element |
-| `style` | `CSSProperties` | — | Inline styles on wrapper |
-| `width` | `number \| string` | ViewBox-based | Override width |
-| `height` | `number \| string` | ViewBox-based | Override height |
+| Prop          | Type                               | Default       | Description                    |
+| ------------- | ---------------------------------- | ------------- | ------------------------------ |
+| `spec`        | `DiagramSpec`                      | _required_    | Diagram specification object   |
+| `theme`       | `'light' \| 'dark' \| 'auto'`      | `'auto'`      | Color theme                    |
+| `onNodeClick` | `(nodeId: string) => void`         | —             | Click callback                 |
+| `onNodeHover` | `(nodeId: string \| null) => void` | —             | Hover callback (null on leave) |
+| `className`   | `string`                           | —             | CSS class on wrapper element   |
+| `style`       | `CSSProperties`                    | —             | Inline styles on wrapper       |
+| `width`       | `number \| string`                 | ViewBox-based | Override width                 |
+| `height`      | `number \| string`                 | ViewBox-based | Override height                |
 
 ## Features
 

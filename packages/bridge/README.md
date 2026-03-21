@@ -6,7 +6,7 @@ Conversation bridge for [diagramma](https://github.com/SHA888/diagramma) — con
 
 ## What This Package Provides
 
-This is what makes diagramma *conversation-aware*. The bridge handles four concerns:
+This is what makes diagramma _conversation-aware_. The bridge handles four concerns:
 
 1. **Context ingestion** — conversation history → diagram spec generation prompts
 2. **Click callbacks** — clicking a diagram node → follow-up question to the LLM
@@ -53,24 +53,24 @@ bridge.patchSpec({
 
 ### `DiagramBridge`
 
-| Method | Description |
-|---|---|
-| `ingestMessage(msg)` | Feed a conversation message for context |
-| `handleNodeClick(nodeId)` | Generate a follow-up prompt about a node |
-| `feedStreamChunk(chunk)` | Feed streaming LLM output for progressive rendering |
-| `patchSpec(patch)` | Apply incremental changes to the current spec |
-| `getSpec()` | Get the current diagram spec |
-| `reset()` | Clear all state |
+| Method                    | Description                                         |
+| ------------------------- | --------------------------------------------------- |
+| `ingestMessage(msg)`      | Feed a conversation message for context             |
+| `handleNodeClick(nodeId)` | Generate a follow-up prompt about a node            |
+| `feedStreamChunk(chunk)`  | Feed streaming LLM output for progressive rendering |
+| `patchSpec(patch)`        | Apply incremental changes to the current spec       |
+| `getSpec()`               | Get the current diagram spec                        |
+| `reset()`                 | Clear all state                                     |
 
 ### `SpecPatch`
 
-| Field | Type | Description |
-|---|---|---|
-| `add` | `Node[]` | Nodes to add |
-| `remove` | `string[]` | Node IDs to remove |
-| `update` | `Partial<Node>[]` | Node property updates |
-| `addEdges` | `Edge[]` | Edges to add |
-| `removeEdges` | `{from, to}[]` | Edges to remove |
+| Field         | Type              | Description           |
+| ------------- | ----------------- | --------------------- |
+| `add`         | `Node[]`          | Nodes to add          |
+| `remove`      | `string[]`        | Node IDs to remove    |
+| `update`      | `Partial<Node>[]` | Node property updates |
+| `addEdges`    | `Edge[]`          | Edges to add          |
+| `removeEdges` | `{from, to}[]`    | Edges to remove       |
 
 ### Streaming
 

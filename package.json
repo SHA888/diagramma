@@ -3,8 +3,30 @@
   "private": true,
   "packageManager": "pnpm@10.6.5",
   "scripts": {
-    "build": "pnpm -r build",
-    "test": "pnpm -r test",
-    "lint": "pnpm -r lint"
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:rust": "cargo fmt --all -- --check",
+    "lint:rust": "cargo clippy --all-targets --all-features -- -D warnings",
+    "typecheck:rust": "cargo check --all-targets --all-features",
+    "lint:ts": "pnpm -r run lint --if-present",
+    "typecheck:ts": "pnpm -r run typecheck --if-present",
+    "precommit": "pnpm format:rust && pnpm lint:rust && pnpm typecheck:rust && pnpm format:check && pnpm lint:ts && pnpm typecheck:ts",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.66",
+    "@typescript-eslint/eslint-plugin": "8.57.1",
+    "@typescript-eslint/parser": "8.57.1",
+    "eslint": "9.11.0",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-plugin-react": "7.37.2",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "husky": "9.1.5",
+    "prettier": "3.3.3",
+    "turbo": "2.1.1",
+    "typescript": "5.5.4"
   }
 }

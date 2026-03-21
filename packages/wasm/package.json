@@ -1,7 +1,7 @@
 {
   "name": "@diagramma/wasm",
   "version": "0.0.1",
-  "description": "WASM bridge for diagramma \u2014 Rust core compiled to WebAssembly",
+  "description": "WASM bridge for diagramma — Rust core compiled to WebAssembly",
   "author": "Kresna Sucandra (https://github.com/SHA888)",
   "license": "(MIT OR Apache-2.0)",
   "repository": {

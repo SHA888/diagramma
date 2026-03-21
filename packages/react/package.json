@@ -1,7 +1,7 @@
 {
   "name": "@diagramma/react",
   "version": "0.0.1",
-  "description": "React component library for diagramma \u2014 <Diagram /> with interactive SVG rendering",
+  "description": "React component library for diagramma — <Diagram /> with interactive SVG rendering",
   "author": "Kresna Sucandra (https://github.com/SHA888)",
   "license": "(MIT OR Apache-2.0)",
   "repository": {

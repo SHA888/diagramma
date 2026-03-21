@@ -10,12 +10,12 @@ Diagramma takes semantic diagram descriptions (nodes, edges, containers) and pro
 
 This is the umbrella package. The actual functionality lives in scoped packages:
 
-| Package | Purpose |
-|---|---|
-| [`@diagramma/wasm`](https://www.npmjs.com/package/@diagramma/wasm) | WASM bridge — Rust rendering core in the browser |
-| [`@diagramma/theme`](https://www.npmjs.com/package/@diagramma/theme) | Design tokens, color ramps, CSS variables |
-| [`@diagramma/react`](https://www.npmjs.com/package/@diagramma/react) | `<Diagram spec={...} />` React component |
-| [`@diagramma/bridge`](https://www.npmjs.com/package/@diagramma/bridge) | LLM conversation ↔ diagram integration |
+| Package                                                                | Purpose                                          |
+| ---------------------------------------------------------------------- | ------------------------------------------------ |
+| [`@diagramma/wasm`](https://www.npmjs.com/package/@diagramma/wasm)     | WASM bridge — Rust rendering core in the browser |
+| [`@diagramma/theme`](https://www.npmjs.com/package/@diagramma/theme)   | Design tokens, color ramps, CSS variables        |
+| [`@diagramma/react`](https://www.npmjs.com/package/@diagramma/react)   | `<Diagram spec={...} />` React component         |
+| [`@diagramma/bridge`](https://www.npmjs.com/package/@diagramma/bridge) | LLM conversation ↔ diagram integration          |
 
 ## Quick Start
 
