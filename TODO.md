@@ -96,37 +96,37 @@
 
 ### diagramma-layout
 
-- [ ] **Layout result types**
-  - [ ] `LayoutNode` — id, x, y, width, height, shape
-  - [ ] `LayoutEdge` — id, path (Vec of points), arrow positions
-  - [ ] `LayoutContainer` — id, x, y, width, height, children layout
-  - [ ] `LayoutResult` — all positioned elements, viewBox dimensions
-- [ ] **Text measurement**
-  - [ ] Character-width estimation (monospace approximation: ~8px per char at 14px, ~7px at 12px)
-  - [ ] Box auto-sizing: `width = max(title_chars × 8, subtitle_chars × 7) + 24`
-  - [ ] Configurable font metrics (for WASM consumers providing real measurements)
+- [x] **Layout result types**
+  - [x] `LayoutNode` — id, x, y, width, height, shape
+  - [x] `LayoutEdge` — id, path (Vec of points), arrow positions
+  - [x] `LayoutContainer` — id, x, y, width, height, children layout
+  - [x] `LayoutResult` — all positioned elements, viewBox dimensions
+- [x] **Text measurement**
+  - [x] Character-width estimation (monospace approximation: ~8px per char at 14px, ~7px at 12px)
+  - [x] Box auto-sizing: `width = max(title_chars × 8, subtitle_chars × 7) + 24`
+  - [x] Configurable font metrics (for WASM consumers providing real measurements)
 - [ ] **Flowchart layout (hierarchical / layered)**
-  - [ ] Layer assignment (longest path or network simplex)
-  - [ ] Node ordering within layers (barycenter heuristic or median)
-  - [ ] Coordinate assignment (Brandes-Köpf or similar)
-  - [ ] Configurable spacing: inter-layer (60px default), intra-layer (40px default)
-  - [ ] Direction support: top-down, left-right, bottom-up, right-left
-  - [ ] Horizontal tier cap: max 4 nodes at full width, wrap or shrink beyond
-- [ ] **Structural layout (tree packing)**
-  - [ ] Recursive container sizing (children + padding)
-  - [ ] Packing algorithm for sibling containers
-  - [ ] Padding: 24px inner, 12px text-to-edge
-  - [ ] Nesting-aware coordinate computation
+  - [x] Layer assignment (longest path or network simplex)
+  - [x] Node ordering within layers (barycenter heuristic or median)
+  - [x] Coordinate assignment (Brandes-Köpf or similar)
+  - [x] Configurable spacing: inter-layer (60px default), intra-layer (40px default)
+  - [x] Direction support: top-down, left-right, bottom-up, right-left
+  - [x] Horizontal tier cap: max 4 nodes at full width, wrap or shrink beyond
+- [x] **Structural layout (tree packing)**
+  - [x] Recursive container sizing (children + padding)
+  - [x] Packing algorithm for sibling containers
+  - [x] Padding: 24px inner, 12px text-to-edge
+  - [x] Nesting-aware coordinate computation
 - [ ] **Arrow routing**
-  - [ ] Direct paths (straight line between connection points)
-  - [ ] L-bend routing (horizontal-then-vertical or vice versa)
+  - [x] Direct paths (straight line between connection points)
+  - [x] L-bend routing (horizontal-then-vertical or vice versa)
   - [ ] Obstacle avoidance: edges detour around unrelated boxes
   - [ ] Connection point selection (top, bottom, left, right based on direction)
   - [ ] Edge-edge crossing minimization (heuristic)
 - [ ] **ViewBox computation**
-  - [ ] Fixed width: 680px, content safe area x=40..640
-  - [ ] Dynamic height based on content
-  - [ ] Margin/padding around content bounds
+  - [x] Fixed width: 680px, content safe area x=40..640
+  - [x] Dynamic height based on content
+  - [x] Margin/padding around content bounds
 - [ ] **Tests**
   - [ ] Snapshot tests: known specs → expected layout coordinates
   - [ ] No-overlap invariant: boxes don't intersect (property test)
