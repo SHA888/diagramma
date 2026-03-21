@@ -6,13 +6,7 @@
     {
       "description": "Flowchart diagram specification.",
       "type": "object",
-      "required": [
-        "direction",
-        "edges",
-        "nodes",
-        "theme",
-        "type"
-      ],
+      "required": ["direction", "edges", "nodes", "theme", "type"],
       "properties": {
         "direction": {
           "$ref": "#/definitions/Direction"
@@ -34,20 +28,14 @@
         },
         "type": {
           "type": "string",
-          "enum": [
-            "flowchart"
-          ]
+          "enum": ["flowchart"]
         }
       }
     },
     {
       "description": "Structural specification (container tree).",
       "type": "object",
-      "required": [
-        "containers",
-        "theme",
-        "type"
-      ],
+      "required": ["containers", "theme", "type"],
       "properties": {
         "containers": {
           "type": "array",
@@ -66,20 +54,14 @@
         },
         "type": {
           "type": "string",
-          "enum": [
-            "structural"
-          ]
+          "enum": ["structural"]
         }
       }
     },
     {
       "description": "Illustrative specification (freeform shapes, annotations).",
       "type": "object",
-      "required": [
-        "elements",
-        "theme",
-        "type"
-      ],
+      "required": ["elements", "theme", "type"],
       "properties": {
         "annotations": {
           "type": "array",
@@ -98,19 +80,14 @@
         },
         "type": {
           "type": "string",
-          "enum": [
-            "illustrative"
-          ]
+          "enum": ["illustrative"]
         }
       }
     },
     {
       "description": "Interactive specification (base diagram + controls).",
       "type": "object",
-      "required": [
-        "base",
-        "type"
-      ],
+      "required": ["base", "type"],
       "properties": {
         "base": {
           "$ref": "#/definitions/DiagramSpec"
@@ -123,9 +100,7 @@
         },
         "type": {
           "type": "string",
-          "enum": [
-            "interactive"
-          ]
+          "enum": ["interactive"]
         }
       }
     }
@@ -134,35 +109,17 @@
     "ArrowStyle": {
       "description": "Arrow styles for edges.",
       "type": "string",
-      "enum": [
-        "Open",
-        "Closed",
-        "None"
-      ]
+      "enum": ["Open", "Closed", "None"]
     },
     "ColorRamp": {
       "description": "Color ramps available to nodes/containers.",
       "type": "string",
-      "enum": [
-        "Purple",
-        "Teal",
-        "Coral",
-        "Pink",
-        "Gray",
-        "Blue",
-        "Green",
-        "Amber",
-        "Red"
-      ]
+      "enum": ["Purple", "Teal", "Coral", "Pink", "Gray", "Blue", "Green", "Amber", "Red"]
     },
     "Container": {
       "description": "Container definition (recursive).",
       "type": "object",
-      "required": [
-        "color",
-        "id",
-        "label"
-      ],
+      "required": ["color", "id", "label"],
       "properties": {
         "children": {
           "type": "array",
@@ -186,17 +143,11 @@
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "control",
-            "id",
-            "label"
-          ],
+          "required": ["control", "id", "label"],
           "properties": {
             "control": {
               "type": "string",
-              "enum": [
-                "toggle"
-              ]
+              "enum": ["toggle"]
             },
             "id": {
               "type": "string"
@@ -208,19 +159,11 @@
         },
         {
           "type": "object",
-          "required": [
-            "control",
-            "id",
-            "label",
-            "max",
-            "min"
-          ],
+          "required": ["control", "id", "label", "max", "min"],
           "properties": {
             "control": {
               "type": "string",
-              "enum": [
-                "slider"
-              ]
+              "enum": ["slider"]
             },
             "id": {
               "type": "string"
@@ -238,10 +181,7 @@
             },
             "step": {
               "default": null,
-              "type": [
-                "integer",
-                "null"
-              ],
+              "type": ["integer", "null"],
               "format": "int32"
             }
           }
@@ -254,13 +194,7 @@
         {
           "description": "Flowchart diagram specification.",
           "type": "object",
-          "required": [
-            "direction",
-            "edges",
-            "nodes",
-            "theme",
-            "type"
-          ],
+          "required": ["direction", "edges", "nodes", "theme", "type"],
           "properties": {
             "direction": {
               "$ref": "#/definitions/Direction"
@@ -282,20 +216,14 @@
             },
             "type": {
               "type": "string",
-              "enum": [
-                "flowchart"
-              ]
+              "enum": ["flowchart"]
             }
           }
         },
         {
           "description": "Structural specification (container tree).",
           "type": "object",
-          "required": [
-            "containers",
-            "theme",
-            "type"
-          ],
+          "required": ["containers", "theme", "type"],
           "properties": {
             "containers": {
               "type": "array",
@@ -314,20 +242,14 @@
             },
             "type": {
               "type": "string",
-              "enum": [
-                "structural"
-              ]
+              "enum": ["structural"]
             }
           }
         },
         {
           "description": "Illustrative specification (freeform shapes, annotations).",
           "type": "object",
-          "required": [
-            "elements",
-            "theme",
-            "type"
-          ],
+          "required": ["elements", "theme", "type"],
           "properties": {
             "annotations": {
               "type": "array",
@@ -346,19 +268,14 @@
             },
             "type": {
               "type": "string",
-              "enum": [
-                "illustrative"
-              ]
+              "enum": ["illustrative"]
             }
           }
         },
         {
           "description": "Interactive specification (base diagram + controls).",
           "type": "object",
-          "required": [
-            "base",
-            "type"
-          ],
+          "required": ["base", "type"],
           "properties": {
             "base": {
               "$ref": "#/definitions/DiagramSpec"
@@ -371,9 +288,7 @@
             },
             "type": {
               "type": "string",
-              "enum": [
-                "interactive"
-              ]
+              "enum": ["interactive"]
             }
           }
         }
@@ -382,20 +297,12 @@
     "Direction": {
       "description": "Primary direction for layout engines.",
       "type": "string",
-      "enum": [
-        "TopDown",
-        "LeftRight",
-        "BottomUp",
-        "RightLeft"
-      ]
+      "enum": ["TopDown", "LeftRight", "BottomUp", "RightLeft"]
     },
     "Edge": {
       "description": "Edge definition.",
       "type": "object",
-      "required": [
-        "from",
-        "to"
-      ],
+      "required": ["from", "to"],
       "properties": {
         "arrow": {
           "default": "Closed",
@@ -409,10 +316,7 @@
           "type": "string"
         },
         "label": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         },
         "style": {
           "default": "Solid",
@@ -430,19 +334,14 @@
     "EdgeStyle": {
       "description": "Edge style variants.",
       "type": "string",
-      "enum": [
-        "Solid",
-        "Dashed"
-      ]
+      "enum": ["Solid", "Dashed"]
     },
     "Element": {
       "description": "Diagram element types.",
       "oneOf": [
         {
           "type": "object",
-          "required": [
-            "Node"
-          ],
+          "required": ["Node"],
           "properties": {
             "Node": {
               "$ref": "#/definitions/Node"
@@ -452,9 +351,7 @@
         },
         {
           "type": "object",
-          "required": [
-            "Container"
-          ],
+          "required": ["Container"],
           "properties": {
             "Container": {
               "$ref": "#/definitions/Container"
@@ -467,12 +364,7 @@
     "Node": {
       "description": "Node definition.",
       "type": "object",
-      "required": [
-        "color",
-        "id",
-        "label",
-        "shape"
-      ],
+      "required": ["color", "id", "label", "shape"],
       "properties": {
         "color": {
           "$ref": "#/definitions/ColorRamp"
@@ -487,31 +379,19 @@
           "$ref": "#/definitions/NodeShape"
         },
         "subtitle": {
-          "type": [
-            "string",
-            "null"
-          ]
+          "type": ["string", "null"]
         }
       }
     },
     "NodeShape": {
       "description": "Node shapes.",
       "type": "string",
-      "enum": [
-        "Rect",
-        "Pill",
-        "Diamond",
-        "Circle"
-      ]
+      "enum": ["Rect", "Pill", "Diamond", "Circle"]
     },
     "Theme": {
       "description": "Theme selection for specs.",
       "type": "string",
-      "enum": [
-        "Light",
-        "Dark",
-        "Auto"
-      ]
+      "enum": ["Light", "Dark", "Auto"]
     }
   }
 }

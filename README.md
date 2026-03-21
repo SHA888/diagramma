@@ -29,7 +29,7 @@ Diagramma is a three-layer system:
 | [`@diagramma/wasm`](packages/wasm/)     | WASM bridge — Rust core in the browser    |
 | [`@diagramma/theme`](packages/theme/)   | Design tokens, color ramps, CSS variables |
 | [`@diagramma/react`](packages/react/)   | `<Diagram spec={...} />` React component  |
-| [`@diagramma/bridge`](packages/bridge/) | LLM conversation ↔ diagram integration   |
+| [`@diagramma/bridge`](packages/bridge/) | LLM conversation ↔ diagram integration    |
 | [`diagramma`](packages/diagramma/)      | Umbrella package                          |
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed system design and data flow.
