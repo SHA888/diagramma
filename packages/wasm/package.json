@@ -1,0 +1,23 @@
+{
+  "name": "@diagramma/wasm",
+  "version": "0.0.1",
+  "description": "WASM bridge for diagramma \u2014 Rust core compiled to WebAssembly",
+  "author": "Kresna Sucandra (https://github.com/SHA888)",
+  "license": "(MIT OR Apache-2.0)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SHA888/diagramma",
+    "directory": "packages/wasm"
+  },
+  "keywords": [
+    "diagram",
+    "svg",
+    "wasm",
+    "visualization"
+  ],
+  "main": "index.js",
+  "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
+}

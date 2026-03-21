@@ -1,0 +1,24 @@
+{
+  "name": "diagramma",
+  "version": "0.0.1",
+  "description": "Conversation-aware diagram rendering engine \u2014 semantic specs to interactive SVG",
+  "author": "Kresna Sucandra (https://github.com/SHA888)",
+  "license": "(MIT OR Apache-2.0)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SHA888/diagramma",
+    "directory": "packages/diagramma"
+  },
+  "keywords": [
+    "diagram",
+    "svg",
+    "visualization",
+    "rendering",
+    "interactive"
+  ],
+  "main": "index.js",
+  "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
+}

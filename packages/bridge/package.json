@@ -1,0 +1,24 @@
+{
+  "name": "@diagramma/bridge",
+  "version": "0.0.1",
+  "description": "Conversation bridge for diagramma \u2014 LLM context ingestion, click callbacks, streaming",
+  "author": "Kresna Sucandra (https://github.com/SHA888)",
+  "license": "(MIT OR Apache-2.0)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SHA888/diagramma",
+    "directory": "packages/bridge"
+  },
+  "keywords": [
+    "diagram",
+    "llm",
+    "conversation",
+    "streaming",
+    "callbacks"
+  ],
+  "main": "index.js",
+  "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
+}

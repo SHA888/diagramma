@@ -1,0 +1,18 @@
+[package]
+name = "diagramma-layout"
+description = "Auto-layout algorithms for diagramma — hierarchical, tree packing, and arrow routing"
+readme = "README.md"
+keywords = ["diagram", "layout", "graph", "visualization"]
+categories = ["visualization", "algorithms"]
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+diagramma-core = { path = "../diagramma-core", version = "0.0.1" }
+
+[lints]
+workspace = true

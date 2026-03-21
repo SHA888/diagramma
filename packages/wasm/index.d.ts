@@ -1,0 +1,2 @@
+// @diagramma/wasm — placeholder
+export {};

@@ -1,0 +1,23 @@
+{
+  "name": "@diagramma/theme",
+  "version": "0.0.1",
+  "description": "Design tokens, color ramps, and dark/light mode CSS for diagramma",
+  "author": "Kresna Sucandra (https://github.com/SHA888)",
+  "license": "(MIT OR Apache-2.0)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SHA888/diagramma",
+    "directory": "packages/theme"
+  },
+  "keywords": [
+    "diagram",
+    "design-tokens",
+    "theme",
+    "css-variables"
+  ],
+  "main": "index.js",
+  "types": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  }
+}

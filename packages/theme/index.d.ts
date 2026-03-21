@@ -1,0 +1,2 @@
+// @diagramma/theme — placeholder
+export {};

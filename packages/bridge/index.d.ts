@@ -1,0 +1,2 @@
+// @diagramma/bridge — placeholder
+export {};
