@@ -49,44 +49,44 @@
 
 ### diagramma-core
 
-- [ ] **Data model**
-  - [ ] `NodeId` — typed wrapper (`String` or `SmolStr`)
-  - [ ] `Node` — id, label, subtitle, color (ramp name), shape (rect, pill, diamond, circle)
-  - [ ] `Edge` — from, to, label (optional), style (solid, dashed), arrow (open, closed, none)
-  - [ ] `Container` — id, label, color, children (recursive `Vec<Element>`)
-  - [ ] `Element` enum — `Node | Container`
-  - [ ] `ColorRamp` enum — purple, teal, coral, pink, gray, blue, green, amber, red
-  - [ ] `Theme` enum — light, dark, auto
-  - [ ] `Direction` enum — top-down, left-right, bottom-up, right-left
-- [ ] **Diagram spec types**
-  - [ ] `FlowchartSpec` — direction, nodes, edges, theme
-  - [ ] `StructuralSpec` — containers (tree), edges, theme
-  - [ ] `IllustrativeSpec` — shapes, annotations, spatial regions, theme
-  - [ ] `InteractiveSpec` — base diagram + controls (sliders, toggles, state bindings)
-  - [ ] `DiagramSpec` enum — unifying all four types
-- [ ] **Validation**
-  - [ ] Edge references resolve to existing node/container IDs
-  - [ ] No duplicate IDs within a spec
-  - [ ] Container nesting depth limit (configurable, default 6)
-  - [ ] Color ramp name validation
-  - [ ] Meaningful error messages (not just "invalid spec")
-- [ ] **Serialization**
-  - [ ] `serde::Serialize` + `serde::Deserialize` for all types
-  - [ ] JSON schema generation (via `schemars` or manual)
-  - [ ] Published JSON schema files for editor autocompletion
-- [ ] **Tests**
-  - [ ] Unit tests for all type constructors
-  - [ ] Validation tests: valid specs pass, invalid specs produce correct errors
-  - [ ] Round-trip serialization tests (struct → JSON → struct)
-  - [ ] Property-based tests for spec validation (proptest or quickcheck)
+- [x] **Data model**
+  - [x] `NodeId` — typed wrapper (`String` or `SmolStr`)
+  - [x] `Node` — id, label, subtitle, color (ramp name), shape (rect, pill, diamond, circle)
+  - [x] `Edge` — from, to, label (optional), style (solid, dashed), arrow (open, closed, none)
+  - [x] `Container` — id, label, color, children (recursive `Vec<Element>`)
+  - [x] `Element` enum — `Node | Container`
+  - [x] `ColorRamp` enum — purple, teal, coral, pink, gray, blue, green, amber, red
+  - [x] `Theme` enum — light, dark, auto
+  - [x] `Direction` enum — top-down, left-right, bottom-up, right-left
+- [x] **Diagram spec types**
+  - [x] `FlowchartSpec` — direction, nodes, edges, theme
+  - [x] `StructuralSpec` — containers (tree), edges, theme
+  - [x] `IllustrativeSpec` — shapes, annotations, spatial regions, theme
+  - [x] `InteractiveSpec` — base diagram + controls (sliders, toggles, state bindings)
+  - [x] `DiagramSpec` enum — unifying all four types
+- [x] **Validation**
+  - [x] Edge references resolve to existing node/container IDs
+  - [x] No duplicate IDs within a spec
+  - [x] Container nesting depth limit (configurable, default 6)
+  - [x] Color ramp name validation
+  - [x] Meaningful error messages (not just "invalid spec")
+- [x] **Serialization**
+  - [x] `serde::Serialize` + `serde::Deserialize` for all types
+  - [x] JSON schema generation (via `schemars` or manual)
+  - [x] Published JSON schema files for editor autocompletion
+- [x] **Tests**
+  - [x] Unit tests for all type constructors
+  - [x] Validation tests: valid specs pass, invalid specs produce correct errors
+  - [x] Round-trip serialization tests (struct → JSON → struct)
+  - [x] Property-based tests for spec validation (proptest or quickcheck)
 
 ### v0.1.0 Release Checklist
 
-- [ ] All `diagramma-core` types implemented and tested
-- [ ] JSON schema published alongside crate
-- [ ] API docs (`cargo doc`) reviewed and complete
-- [ ] CHANGELOG updated
-- [ ] Tag `v0.1.0`, publish `diagramma-core` to crates.io
+- [x] All `diagramma-core` types implemented and tested
+- [x] JSON schema published alongside crate
+- [x] API docs (`cargo doc`) reviewed and complete
+- [x] CHANGELOG updated
+- [x] Tag `v0.1.0`, publish `diagramma-core` to crates.io
 
 ---
 

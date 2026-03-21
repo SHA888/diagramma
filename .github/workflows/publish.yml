@@ -18,6 +18,41 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Ensure CI workflows succeeded
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const required = ["Rust CI", "TypeScript CI"];
+            const {owner, repo} = context.repo;
+            const response = await github.paginate(github.rest.checks.listForRef, {
+              owner,
+              repo,
+              ref: context.sha,
+              per_page: 100,
+            }, res => res.data);
+
+            const results = {};
+            for (const run of response) {
+              if (!required.includes(run.name)) continue;
+              if (!run.completed_at || run.status !== "completed") continue;
+              const existing = results[run.name];
+              if (!existing || new Date(run.completed_at) > new Date(existing.completed_at)) {
+                results[run.name] = run;
+              }
+            }
+
+            for (const name of required) {
+              const result = results[name];
+              if (!result) {
+                core.setFailed(`Required workflow "${name}" has not completed for this commit.`);
+                return;
+              }
+              if (result.conclusion !== "success") {
+                core.setFailed(`Required workflow "${name}" did not succeed (conclusion: ${result.conclusion}).`);
+                return;
+              }
+            }
+
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:

@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-03-21
+
+### Added
+
+- Complete diagram DSL data model in `diagramma-core`: `NodeId`, nodes, edges, containers, elements, color ramps, direction/theme enums, and diagram spec structs/enums (flowchart, structural, illustrative, interactive, `DiagramSpec`).
+- Validation + error reporting for duplicate IDs, missing edge refs, container depth limits, and empty specs.
+- Serialization + JSON schema support (`schemars`) plus Husky helpers to emit `schemas/diagram-spec.json` for editor tooling.
+- Expanded test suite covering serialization round-trips, validation scenarios, and property-based duplicate detection.
+
+### Changed
+
+- Bumped workspace/crate versions to `0.1.0` in preparation for release.
+
+### Fixed
+
+- Ensured publish artifact includes schema files and documentation.
+
 ## [0.0.2] - 2026-03-21
 
 ### Added

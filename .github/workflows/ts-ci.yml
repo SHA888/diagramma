@@ -35,3 +35,6 @@ jobs:
 
       - name: Test
         run: pnpm -r run test --if-present
+
+      - name: Security audit
+        run: pnpm audit --audit-level moderate
