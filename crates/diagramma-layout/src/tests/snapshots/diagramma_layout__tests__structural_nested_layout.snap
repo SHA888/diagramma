@@ -1,0 +1,27 @@
+---
+source: crates/diagramma-layout/src/tests/mod.rs
+expression: snapshot_view(&layout)
+---
+nodes:
+  - id: api
+    x: 64
+    y: 104
+    width: 140
+    height: 56
+  - id: svc-a
+    x: 88
+    y: 248
+    width: 140
+    height: 56
+edges: []
+containers:
+  - id: root
+    x: 40
+    y: 40
+    width: 236
+    height: 312
+viewbox:
+  - 40
+  - 0
+  - 640
+  - 416
