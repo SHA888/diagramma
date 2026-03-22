@@ -117,21 +117,21 @@
   - [x] Packing algorithm for sibling containers
   - [x] Padding: 24px inner, 12px text-to-edge
   - [x] Nesting-aware coordinate computation
-- [ ] **Arrow routing**
+- [x] **Arrow routing**
   - [x] Direct paths (straight line between connection points)
   - [x] L-bend routing (horizontal-then-vertical or vice versa)
-  - [ ] Obstacle avoidance: edges detour around unrelated boxes
-  - [ ] Connection point selection (top, bottom, left, right based on direction)
-  - [ ] Edge-edge crossing minimization (heuristic)
-- [ ] **ViewBox computation**
+  - [x] Obstacle avoidance: edges detour around unrelated boxes
+  - [x] Connection point selection (top, bottom, left, right based on direction)
+  - [x] Edge-edge crossing minimization (heuristic)
+- [x] **ViewBox computation**
   - [x] Fixed width: 680px, content safe area x=40..640
   - [x] Dynamic height based on content
   - [x] Margin/padding around content bounds
-- [ ] **Tests**
-  - [ ] Snapshot tests: known specs → expected layout coordinates
-  - [ ] No-overlap invariant: boxes don't intersect (property test)
-  - [ ] ViewBox contains all elements (property test)
-  - [ ] Benchmark: layout performance on specs with 10, 50, 200, 1000 nodes
+- [x] **Tests**
+  - [x] Snapshot tests: known specs → expected layout coordinates
+  - [x] No-overlap invariant: boxes don't intersect (property test)
+  - [x] ViewBox contains all elements (property test)
+  - [x] Benchmark: layout performance on specs with 10, 50, 200, 1000 nodes
 
 ### v0.2.0 Release Checklist
 

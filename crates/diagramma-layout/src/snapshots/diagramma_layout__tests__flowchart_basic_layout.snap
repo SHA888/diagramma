@@ -1,0 +1,40 @@
+---
+source: crates/diagramma-layout/src/lib.rs
+assertion_line: 1332
+expression: snapshot_view(&layout)
+---
+nodes:
+  - id: decision
+    x: 40
+    y: 240
+    width: 100
+    height: 60
+  - id: process
+    x: 40
+    y: 120
+    width: 100
+    height: 60
+  - id: start
+    x: 40
+    y: 0
+    width: 100
+    height: 60
+edges:
+  - id: process-decision
+    path:
+      - - 90
+        - 196
+      - - 90
+        - 224
+  - id: start-process
+    path:
+      - - 90
+        - 76
+      - - 90
+        - 104
+containers: []
+viewbox:
+  - 40
+  - 0
+  - 600
+  - 340

@@ -14,5 +14,15 @@ authors.workspace = true
 [dependencies]
 diagramma-core = { path = "../diagramma-core", version = "0.1.0" }
 
+[dev-dependencies]
+criterion = "0.5"
+insta = { version = "1.39.0", features = ["yaml"] }
+proptest = "1.5"
+serde = { version = "1", features = ["derive"] }
+
 [lints]
 workspace = true
+
+[[bench]]
+name = "layout"
+harness = false
