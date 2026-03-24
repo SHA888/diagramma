@@ -1,9 +1,6 @@
 name: Publish (crates.io + npm)
 
 on:
-  push:
-    tags:
-      - 'v*'
   workflow_run:
     workflows: ['Rust CI', 'TypeScript CI', 'Benchmark']
     types:
@@ -37,26 +34,26 @@ jobs:
             const tag = context.ref.replace('refs/tags/', '');
             const isTag = context.ref.startsWith('refs/tags/');
 
-            // For workflow_run events, check the triggering workflow
+            // For workflow_run events, check if we're on a tag and all workflows completed
             if (context.eventName === 'workflow_run') {
               const triggeringWorkflow = context.payload.workflow_run.name;
-              console.log(`Triggered by workflow: ${triggeringWorkflow}`);
+              const branch = context.payload.workflow_run.head_branch;
+              const commitSha = context.payload.workflow_run.head_sha;
+              console.log(`Triggered by workflow: ${triggeringWorkflow} on branch: ${branch}, sha: ${commitSha}`);
               
-              // Only proceed if this is one of our required workflows
-              if (!required.find(r => r.workflow === triggeringWorkflow)) {
-                console.log('Not a required workflow, skipping publish');
+              // Only proceed if this is one of our required workflows AND we're on a tag
+              if (!required.find(r => r.workflow === triggeringWorkflow) || !branch.startsWith('v')) {
+                console.log('Not a required workflow or not on a tag, skipping publish');
                 core.setOutput('should-publish', 'false');
                 return;
               }
-            }
-
-            // For tags, check all required workflows have completed
-            if (isTag) {
+              
+              // Check all required workflows have completed for this commit
               const {owner, repo} = context.repo;
               const response = await github.paginate(github.rest.actions.listWorkflowRunsForRepo, {
                 owner,
                 repo,
-                head_sha: context.sha,
+                head_sha: commitSha,
                 per_page: 100,
               }, res => res.data.workflow_runs);
 
@@ -76,7 +73,7 @@ jobs:
               for (const {workflow, label} of required) {
                 const result = results[workflow];
                 if (!result) {
-                  console.log(`Required workflow "${label}" has not completed for this tag.`);
+                  console.log(`Required workflow "${label}" has not completed for this commit.`);
                   core.setOutput('should-publish', 'false');
                   return;
                 }
@@ -87,6 +84,11 @@ jobs:
                 }
                 console.log(`✓ ${label} completed successfully`);
               }
+            } else {
+              // For direct tag pushes (shouldn't happen anymore, but just in case)
+              console.log('Direct tag push detected, skipping publish');
+              core.setOutput('should-publish', 'false');
+              return;
             }
 
             core.setOutput('should-publish', 'true');
