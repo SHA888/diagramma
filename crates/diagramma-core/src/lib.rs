@@ -312,9 +312,10 @@ fn validate_nodes_edges(nodes: &[Node], edges: &[Edge]) -> ValidationResult<()> 
 fn validate_edges_exist(edges: &[Edge], known: &HashSet<NodeId>) -> ValidationResult<()> {
     for edge in edges {
         if edge.from == edge.to {
-            return Err(ValidationError::InvalidEdge(
-                format!("Self-referencing edge: {}", edge.from)
-            ));
+            return Err(ValidationError::InvalidEdge(format!(
+                "Self-referencing edge: {}",
+                edge.from
+            )));
         }
         if !known.contains(&edge.from) {
             return Err(ValidationError::MissingReference(edge.from.clone()));
@@ -470,7 +471,9 @@ mod tests {
             theme: Theme::Light,
         });
         let err = validate_spec(&spec).unwrap_err();
-        assert!(matches!(err, ValidationError::InvalidEdge(msg) if msg.contains("Self-referencing edge")));
+        assert!(
+            matches!(err, ValidationError::InvalidEdge(msg) if msg.contains("Self-referencing edge"))
+        );
     }
 
     proptest! {

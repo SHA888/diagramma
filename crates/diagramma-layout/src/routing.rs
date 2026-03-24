@@ -133,11 +133,7 @@ fn adjust_vertical_clearance(
     x
 }
 
-fn find_clear_line<F>(
-    mut value: f64,
-    step_sign: f64,
-    predicate: F,
-) -> f64
+fn find_clear_line<F>(mut value: f64, step_sign: f64, predicate: F) -> f64
 where
     F: Fn(f64) -> bool,
 {
