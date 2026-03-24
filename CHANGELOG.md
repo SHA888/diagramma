@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-03-24
+
+### Added
+
+- **Flowchart Layout Engine**: Complete hierarchical layout implementation using Sugiyama-style algorithm with layer assignment, barycenter-based crossing minimization, and coordinate assignment with tier capping.
+- **Structural Layout Engine**: Tree packing algorithm for containers with recursive layout, padding calculations, and label width estimation.
+- **Arrow Routing with Obstacle Avoidance**: Multi-strategy routing system with direct paths, L-bend routing (vertical-first and horizontal-first), and fallback dogleg routing with clearance-based obstacle detection.
+- **Layout Benchmarks**: Criterion benchmarks for performance profiling with 10, 50, and 200 node specifications.
+- **Comprehensive Test Suite**: Unit tests, snapshot tests, and property-based tests covering all layout algorithms with no-overlap invariants and viewbox containment validation.
+- **API Documentation**: Complete documentation with examples for all public layout functions.
+
+### Changed
+
+- **Code Quality Improvements**: Fixed float epsilon precision issues, added comprehensive direction test coverage, cleaned up unused parameters, and added self-referencing edge validation.
+- **CI/CD Infrastructure**: Added Rust CI with coverage reporting, TypeScript CI, benchmark workflows, and documentation deployment with GitHub Pages.
+
+### Fixed
+
+- **Edge Cases**: Added validation for self-referencing edges and improved geometric comparisons with appropriate epsilon values.
+- **Test Coverage**: Added missing tests for BottomUp and RightLeft layout directions.
+
 ## [0.1.0] - 2026-03-21
 
 ### Added
