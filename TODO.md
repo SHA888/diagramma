@@ -28,10 +28,15 @@
   - [x] `.github/ISSUE_TEMPLATE/` — bug report, feature request
   - [x] `.github/PULL_REQUEST_TEMPLATE.md`
 - [x] **CI/CD**
-  - [x] GitHub Actions: Rust CI (check, clippy, fmt, test) on `main` + PRs
-  - [x] GitHub Actions: TypeScript CI (typecheck, lint, test) on `main` + PRs
-  - [x] GitHub Actions: publish workflow (crates.io + npm) on tag push
-  - [x] Dependabot or Renovate configuration
+  - [x] GitHub Actions: Rust CI (check, clippy, fmt, test, audit) on `main` + PRs
+  - [x] GitHub Actions: TypeScript CI (typecheck, lint, test, audit) on `main` + PRs
+  - [x] GitHub Actions: publish workflow (crates.io + npm) on tag push with CI validation
+  - [x] Dependabot configuration for automated dependency updates (cargo + npm)
+  - [ ] Code coverage tracking with codecov
+  - [ ] Release workflow with cross-platform binaries
+  - [ ] Benchmark workflow for performance tracking
+  - [ ] Documentation deployment to GitHub Pages
+  - [ ] README badges (CI, version, docs, coverage)
 - [x] **Tooling**
   - [x] `rustfmt.toml` — project formatting rules
   - [x] `clippy.toml` — lint configuration (if overrides needed)
@@ -361,6 +366,9 @@
 
 - [ ] All four diagram types fully implemented
 - [ ] Interactive controls working in React component
+- [ ] Theme switching (light/dark/auto) working
+- [ ] Storybook or demo page with examples
+- [ ] API docs (TSDoc) reviewed
 - [ ] CHANGELOG updated
 - [ ] Tag `v0.7.0`, publish all crates and packages
 
