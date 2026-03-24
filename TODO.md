@@ -140,11 +140,11 @@
 
 ### v0.2.0 Release Checklist
 
-- [ ] Flowchart and structural layout implemented
-- [ ] Arrow routing with obstacle avoidance working
-- [ ] Layout benchmarks baselined
-- [ ] API docs reviewed
-- [ ] CHANGELOG updated
+- [x] Flowchart and structural layout implemented
+- [x] Arrow routing with obstacle avoidance working
+- [x] Layout benchmarks baselined
+- [x] API docs reviewed
+- [x] CHANGELOG updated
 - [ ] Tag `v0.2.0`, publish `diagramma-core` + `diagramma-layout`
 
 ---

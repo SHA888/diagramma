@@ -2,7 +2,7 @@ name: Benchmark
 
 on:
   schedule:
-    - cron: '0 6 * * 1'  # Weekly on Monday at 6:00 UTC
+    - cron: '0 6 * * 1' # Weekly on Monday at 6:00 UTC
   workflow_dispatch:
   push:
     paths:

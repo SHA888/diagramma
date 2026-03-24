@@ -3,6 +3,7 @@ use diagramma_core::Direction;
 
 const CLEARANCE: f64 = 16.0;
 const STEP: f64 = 24.0;
+const EPSILON: f64 = 1e-9;
 
 /// Route an edge with obstacle avoidance and directional connection points.
 #[must_use]
@@ -64,7 +65,7 @@ pub fn route_edge(
     }
 
     // Fallback: dogleg around obstacles by offsetting vertically then horizontally.
-    bend_y = find_clear_line(start.y, 1.0, from, to, obstacles, |y| {
+    bend_y = find_clear_line(start.y, 1.0, |y| {
         !horizontal_hits_obstacle(y, start.x, end.x, from, to, obstacles)
     });
     vec![
@@ -135,9 +136,6 @@ fn adjust_vertical_clearance(
 fn find_clear_line<F>(
     mut value: f64,
     step_sign: f64,
-    _from: &LayoutNode,
-    _to: &LayoutNode,
-    _obstacles: &[LayoutNode],
     predicate: F,
 ) -> f64
 where
@@ -305,7 +303,7 @@ fn vertical_hits_obstacle(
 }
 
 fn segment_intersects_obstacle(start: Point, end: Point, obstacle: &LayoutNode) -> bool {
-    if (start.x - end.x).abs() < f64::EPSILON {
+    if (start.x - end.x).abs() < EPSILON {
         // Vertical segment
         let x = start.x;
         if x < obstacle.x - CLEARANCE || x > obstacle.x + obstacle.width + CLEARANCE {
@@ -319,7 +317,7 @@ fn segment_intersects_obstacle(start: Point, end: Point, obstacle: &LayoutNode) 
         let obs_y1 = obstacle.y - CLEARANCE;
         let obs_y2 = obstacle.y + obstacle.height + CLEARANCE;
         return y2 > obs_y1 && y1 < obs_y2;
-    } else if (start.y - end.y).abs() < f64::EPSILON {
+    } else if (start.y - end.y).abs() < EPSILON {
         // Horizontal segment
         let y = start.y;
         if y < obstacle.y - CLEARANCE || y > obstacle.y + obstacle.height + CLEARANCE {

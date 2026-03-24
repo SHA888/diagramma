@@ -13,6 +13,38 @@ const NODE_HEIGHT: f64 = 56.0;
 ///
 /// # Returns
 /// Positioned layout with containers and edges.
+///
+/// # Examples
+///
+/// ```
+/// use diagramma_core::{StructuralSpec, Container, Element, Node, Theme, ColorRamp};
+/// use diagramma_layout::structural;
+///
+/// let spec = StructuralSpec {
+///     containers: vec![
+///         Container {
+///             id: "root".into(),
+///             label: "Root Container".into(),
+///             color: ColorRamp::Blue,
+///             children: vec![
+///                 Element::Node(Node {
+///                     id: "child1".into(),
+///                     label: "Child 1".into(),
+///                     subtitle: None,
+///                     color: ColorRamp::Teal,
+///                     shape: diagramma_core::NodeShape::Rect,
+///                 }),
+///             ],
+///         },
+///     ],
+///     edges: vec![],
+///     theme: Theme::Light,
+/// };
+///
+/// let layout = structural::layout(&spec, 24.0, 12.0);
+/// assert_eq!(layout.containers.len(), 1);
+/// assert_eq!(layout.nodes.len(), 1);
+/// ```
 #[must_use]
 #[allow(clippy::cast_precision_loss)]
 pub fn layout(spec: &StructuralSpec, inner_padding: f64, text_padding: f64) -> LayoutResult {

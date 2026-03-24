@@ -15,6 +15,45 @@ use std::collections::{HashMap, VecDeque};
 /// # Returns
 /// Positioned layout with nodes, edges, and viewBox.
 ///
+/// # Examples
+///
+/// ```
+/// use diagramma_core::{FlowchartSpec, Node, Edge, Direction, Theme, ColorRamp, NodeShape};
+/// use diagramma_layout::flowchart;
+///
+/// let spec = FlowchartSpec {
+///     direction: Direction::TopDown,
+///     nodes: vec![
+///         Node {
+///             id: "start".into(),
+///             label: "Start".into(),
+///             subtitle: None,
+///             color: ColorRamp::Blue,
+///             shape: NodeShape::Rect,
+///         },
+///         Node {
+///             id: "end".into(),
+///             label: "End".into(),
+///             subtitle: None,
+///             color: ColorRamp::Green,
+///             shape: NodeShape::Rect,
+///         },
+///     ],
+///     edges: vec![Edge {
+///         from: "start".into(),
+///         to: "end".into(),
+///         label: None,
+///         style: diagramma_core::EdgeStyle::Solid,
+///         arrow: diagramma_core::ArrowStyle::Closed,
+///     }],
+///     theme: Theme::Light,
+/// };
+///
+/// let layout = flowchart::layout(&spec, 60.0, 40.0, 100.0, 60.0);
+/// assert_eq!(layout.nodes.len(), 2);
+/// assert_eq!(layout.edges.len(), 1);
+/// ```
+///
 /// # Panics
 /// Panics if a path vector is empty (should not occur with valid specs).
 #[must_use]

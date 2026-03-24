@@ -250,10 +250,14 @@ pub enum ValidationError {
     DuplicateId(NodeId),
     #[error("missing element referenced by edge: {0}")]
     MissingReference(NodeId),
-    #[error("container nesting depth exceeded limit of {limit}")]
+    #[error("container nesting exceeds depth limit: {limit}")]
     ContainerDepth { limit: usize },
-    #[error("diagram must contain at least one element")]
+    #[error("empty diagram")]
     EmptyDiagram,
+    #[error("duplicate control id: {0}")]
+    DuplicateControlId(NodeId),
+    #[error("invalid edge: {0}")]
+    InvalidEdge(String),
 }
 
 /// Result alias for validation.
@@ -307,6 +311,11 @@ fn validate_nodes_edges(nodes: &[Node], edges: &[Edge]) -> ValidationResult<()> 
 
 fn validate_edges_exist(edges: &[Edge], known: &HashSet<NodeId>) -> ValidationResult<()> {
     for edge in edges {
+        if edge.from == edge.to {
+            return Err(ValidationError::InvalidEdge(
+                format!("Self-referencing edge: {}", edge.from)
+            ));
+        }
         if !known.contains(&edge.from) {
             return Err(ValidationError::MissingReference(edge.from.clone()));
         }
@@ -436,6 +445,32 @@ mod tests {
     fn schema_generation_produces_definitions() {
         let schema = diagram_spec_schema();
         assert!(schema.definitions.contains_key("Direction"));
+    }
+
+    #[test]
+    fn test_validate_self_referencing_edge() {
+        let nodes = vec![Node {
+            id: NodeId::new("a"),
+            label: SmolStr::new("A"),
+            subtitle: None,
+            color: ColorRamp::Blue,
+            shape: NodeShape::Rect,
+        }];
+        let edges = vec![Edge {
+            from: NodeId::new("a"),
+            to: NodeId::new("a"),
+            label: None,
+            style: EdgeStyle::Solid,
+            arrow: ArrowStyle::Closed,
+        }];
+        let spec = DiagramSpec::Flowchart(FlowchartSpec {
+            direction: Direction::TopDown,
+            nodes,
+            edges,
+            theme: Theme::Light,
+        });
+        let err = validate_spec(&spec).unwrap_err();
+        assert!(matches!(err, ValidationError::InvalidEdge(msg) if msg.contains("Self-referencing edge")));
     }
 
     proptest! {

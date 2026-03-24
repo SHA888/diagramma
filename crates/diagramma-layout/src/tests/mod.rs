@@ -272,6 +272,80 @@ fn test_flowchart_layout_left_right_direction() {
 }
 
 #[test]
+fn test_flowchart_layout_bottom_up_direction() {
+    let spec = FlowchartSpec {
+        direction: Direction::BottomUp,
+        nodes: vec![
+            Node {
+                id: "n1".into(),
+                label: "Start".into(),
+                subtitle: None,
+                color: diagramma_core::ColorRamp::Blue,
+                shape: diagramma_core::NodeShape::Rect,
+            },
+            Node {
+                id: "n2".into(),
+                label: "Next".into(),
+                subtitle: None,
+                color: diagramma_core::ColorRamp::Green,
+                shape: diagramma_core::NodeShape::Rect,
+            },
+        ],
+        edges: vec![Edge {
+            from: "n1".into(),
+            to: "n2".into(),
+            label: None,
+            style: diagramma_core::EdgeStyle::Solid,
+            arrow: diagramma_core::ArrowStyle::Closed,
+        }],
+        theme: Theme::Light,
+    };
+
+    let result = flowchart::layout(&spec, 60.0, 40.0, 100.0, 60.0);
+    let start = result.nodes.get(&"n1".into()).unwrap();
+    let next = result.nodes.get(&"n2".into()).unwrap();
+    assert!(start.y > next.y); // In BottomUp, start should be below next
+    assert!((start.x - next.x).abs() < f64::EPSILON);
+}
+
+#[test]
+fn test_flowchart_layout_right_left_direction() {
+    let spec = FlowchartSpec {
+        direction: Direction::RightLeft,
+        nodes: vec![
+            Node {
+                id: "n1".into(),
+                label: "Start".into(),
+                subtitle: None,
+                color: diagramma_core::ColorRamp::Blue,
+                shape: diagramma_core::NodeShape::Rect,
+            },
+            Node {
+                id: "n2".into(),
+                label: "Next".into(),
+                subtitle: None,
+                color: diagramma_core::ColorRamp::Green,
+                shape: diagramma_core::NodeShape::Rect,
+            },
+        ],
+        edges: vec![Edge {
+            from: "n1".into(),
+            to: "n2".into(),
+            label: None,
+            style: diagramma_core::EdgeStyle::Solid,
+            arrow: diagramma_core::ArrowStyle::Closed,
+        }],
+        theme: Theme::Light,
+    };
+
+    let result = flowchart::layout(&spec, 60.0, 40.0, 100.0, 60.0);
+    let start = result.nodes.get(&"n1".into()).unwrap();
+    let next = result.nodes.get(&"n2".into()).unwrap();
+    assert!(start.x > next.x); // In RightLeft, start should be to the right of next
+    assert!((start.y - next.y).abs() < f64::EPSILON);
+}
+
+#[test]
 fn test_flowchart_layout_tier_cap_wraps_rows() {
     let mut nodes = Vec::new();
     for idx in 0..6 {
