@@ -53,16 +53,35 @@ jobs:
           cd crates/diagramma-layout
           cargo bench --all-features
 
+      - name: Process benchmark results
+        run: |
+          cd crates/diagramma-layout
+          # Create a simple JSON summary for benchmark-action
+          echo '{"benchmarks": [' > benchmark-results.json
+          first=true
+          for benchmark in ../../target/criterion/*/report/index.html; do
+            if [ -f "$benchmark" ]; then
+              name=$(basename $(dirname $(dirname "$benchmark")))
+              if [ "$first" = true ]; then
+                first=false
+              else
+                echo ',' >> benchmark-results.json
+              fi
+              echo "{\"name\": \"$name\", \"value\": 1}" >> benchmark-results.json
+            fi
+          done
+          echo ']}' >> benchmark-results.json
+
       - name: Store benchmark result
         uses: benchmark-action/github-action-benchmark@v1
         with:
-          tool: 'cargo'
-          output-file-path: target/criterion/report/index.html
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          auto-push: true
+          tool: 'custom'
+          output-file-path: crates/diagramma-layout/benchmark-results.json
           comment-on-alert: true
           alert-threshold: '200%'
           fail-on-alert: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
 
       - name: Upload benchmark artifacts
         uses: actions/upload-artifact@v4
