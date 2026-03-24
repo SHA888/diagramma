@@ -145,7 +145,7 @@
 - [x] Layout benchmarks baselined
 - [x] API docs reviewed
 - [x] CHANGELOG updated
-- [ ] Tag `v0.2.0`, publish `diagramma-core` + `diagramma-layout`
+- [x] Tag `v0.2.0`, publish `diagramma-core` + `diagramma-layout`
 
 ---
 
