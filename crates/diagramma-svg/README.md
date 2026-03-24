@@ -2,6 +2,9 @@
 
 [![crates.io](https://img.shields.io/crates/v/diagramma-svg.svg)](https://crates.io/crates/diagramma-svg)
 [![docs.rs](https://docs.rs/diagramma-svg/badge.svg)](https://docs.rs/diagramma-svg)
+[![CI](https://github.com/SHA888/diagramma/workflows/Rust%20CI/badge.svg)](https://github.com/SHA888/diagramma/actions)
+[![codecov](https://codecov.io/gh/SHA888/diagramma/branch/main/graph/badge.svg)](https://codecov.io/gh/SHA888/diagramma)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE-MIT)
 
 SVG generation for [diagramma](https://github.com/SHA888/diagramma) — the conversation-aware diagram rendering engine.
 

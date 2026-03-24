@@ -1,6 +1,8 @@
 # @diagramma/wasm
 
 [![npm](https://img.shields.io/npm/v/@diagramma/wasm.svg)](https://www.npmjs.com/package/@diagramma/wasm)
+[![TypeScript CI](https://github.com/SHA888/diagramma/workflows/TypeScript%20CI/badge.svg)](https://github.com/SHA888/diagramma/actions)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE-MIT)
 
 WASM bridge for [diagramma](https://github.com/SHA888/diagramma) — runs the Rust rendering core in the browser and Node.js.
 

@@ -1,6 +1,8 @@
 # @diagramma/theme
 
 [![npm](https://img.shields.io/npm/v/@diagramma/theme.svg)](https://www.npmjs.com/package/@diagramma/theme)
+[![TypeScript CI](https://github.com/SHA888/diagramma/workflows/TypeScript%20CI/badge.svg)](https://github.com/SHA888/diagramma/actions)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE-MIT)
 
 Design tokens, color ramps, and CSS variables for [diagramma](https://github.com/SHA888/diagramma).
 

@@ -32,11 +32,11 @@
   - [x] GitHub Actions: TypeScript CI (typecheck, lint, test, audit) on `main` + PRs
   - [x] GitHub Actions: publish workflow (crates.io + npm) on tag push with CI validation
   - [x] Dependabot configuration for automated dependency updates (cargo + npm)
-  - [ ] Code coverage tracking with codecov
-  - [ ] Release workflow with cross-platform binaries
-  - [ ] Benchmark workflow for performance tracking
-  - [ ] Documentation deployment to GitHub Pages
-  - [ ] README badges (CI, version, docs, coverage)
+  - [x] Code coverage tracking with codecov
+  - [x] Release workflow with cross-platform binaries
+  - [x] Benchmark workflow for performance tracking
+  - [x] Documentation deployment to GitHub Pages
+  - [x] README badges (CI, version, docs, coverage)
 - [x] **Tooling**
   - [x] `rustfmt.toml` — project formatting rules
   - [x] `clippy.toml` — lint configuration (if overrides needed)

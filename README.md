@@ -1,5 +1,12 @@
 # diagramma
 
+![CI](https://github.com/SHA888/diagramma/workflows/Rust%20CI/badge.svg)
+![TypeScript CI](https://github.com/SHA888/diagramma/workflows/TypeScript%20CI/badge.svg)
+![codecov](https://codecov.io/gh/SHA888/diagramma/branch/main/graph/badge.svg)
+![crates.io](https://img.shields.io/crates/v/diagramma-core.svg)
+![docs.rs](https://docs.rs/diagramma-core/badge.svg)
+![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)
+
 Conversation-aware diagram rendering engine.
 
 Diagramma takes semantic diagram descriptions (nodes, edges, containers) and produces polished, interactive, theme-aware SVG with dark/light mode adaptation, clickable elements, and LLM conversation integration.

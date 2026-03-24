@@ -1,0 +1,72 @@
+name: Benchmark
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Weekly on Monday at 6:00 UTC
+  workflow_dispatch:
+  push:
+    paths:
+      - 'crates/diagramma-layout/benches/**'
+      - 'crates/diagramma-layout/src/**'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.85.0
+
+      - name: Cache cargo registry
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
+
+      - name: Cache cargo index
+        uses: actions/cache@v3
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-index-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-index-
+
+      - name: Cache cargo build
+        uses: actions/cache@v3
+        with:
+          path: target
+          key: ${{ runner.os }}-cargo-build-target-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-build-target-
+
+      - name: Run benchmarks
+        run: |
+          cd crates/diagramma-layout
+          cargo bench --all-features
+
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          tool: 'cargo'
+          output-file-path: crates/diagramma-layout/target/criterion/report/index.html
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          auto-push: true
+          comment-on-alert: true
+          alert-threshold: '200%'
+          fail-on-alert: true
+
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: benchmark-results
+          path: crates/diagramma-layout/target/criterion/
+          retention-days: 30

@@ -1,6 +1,8 @@
 # @diagramma/bridge
 
 [![npm](https://img.shields.io/npm/v/@diagramma/bridge.svg)](https://www.npmjs.com/package/@diagramma/bridge)
+[![TypeScript CI](https://github.com/SHA888/diagramma/workflows/TypeScript%20CI/badge.svg)](https://github.com/SHA888/diagramma/actions)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE-MIT)
 
 Conversation bridge for [diagramma](https://github.com/SHA888/diagramma) — connects LLM conversations to interactive diagrams.
 

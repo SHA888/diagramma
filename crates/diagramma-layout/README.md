@@ -2,6 +2,9 @@
 
 [![crates.io](https://img.shields.io/crates/v/diagramma-layout.svg)](https://crates.io/crates/diagramma-layout)
 [![docs.rs](https://docs.rs/diagramma-layout/badge.svg)](https://docs.rs/diagramma-layout)
+[![CI](https://github.com/SHA888/diagramma/workflows/Rust%20CI/badge.svg)](https://github.com/SHA888/diagramma/actions)
+[![codecov](https://codecov.io/gh/SHA888/diagramma/branch/main/graph/badge.svg)](https://codecov.io/gh/SHA888/diagramma)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE-MIT)
 
 Auto-layout algorithms for [diagramma](https://github.com/SHA888/diagramma) — the conversation-aware diagram rendering engine.
 

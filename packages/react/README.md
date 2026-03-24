@@ -1,6 +1,8 @@
 # @diagramma/react
 
 [![npm](https://img.shields.io/npm/v/@diagramma/react.svg)](https://www.npmjs.com/package/@diagramma/react)
+[![TypeScript CI](https://github.com/SHA888/diagramma/workflows/TypeScript%20CI/badge.svg)](https://github.com/SHA888/diagramma/actions)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE-MIT)
 
 React component for [diagramma](https://github.com/SHA888/diagramma) — render interactive, themed diagrams from a declarative spec.
 

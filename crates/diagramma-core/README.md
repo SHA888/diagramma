@@ -2,6 +2,9 @@
 
 [![crates.io](https://img.shields.io/crates/v/diagramma-core.svg)](https://crates.io/crates/diagramma-core)
 [![docs.rs](https://docs.rs/diagramma-core/badge.svg)](https://docs.rs/diagramma-core)
+[![CI](https://github.com/SHA888/diagramma/workflows/Rust%20CI/badge.svg)](https://github.com/SHA888/diagramma/actions)
+[![codecov](https://codecov.io/gh/SHA888/diagramma/branch/main/graph/badge.svg)](https://codecov.io/gh/SHA888/diagramma)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE-MIT)
 
 Core type definitions for [diagramma](https://github.com/SHA888/diagramma) — the conversation-aware diagram rendering engine.
 

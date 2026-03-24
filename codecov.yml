@@ -1,0 +1,29 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 70%  # Target for Phase 1
+        threshold: 5%  # Allow 5% drop before failing
+    patch:
+      default:
+        target: 80%  # Higher target for patches
+        threshold: 5%
+
+ignore:
+  - "**/tests/**"     # Test files
+  - "**/*_test.rs"    # Test modules
+  - "**/benches/**"   # Benchmark files
+  - "**/target/**"   # Build artifacts
+
+comment:
+  layout: "reach, diff, flags, files"
+  behavior: default
+  require_changes: false  # Comment on all PRs
+  require_base: no        # Allow coverage on first PR
+  require_head: yes       # Must have coverage data for head
+
+flags:
+  rust:
+    paths:
+      - crates/
+    carryforward: true
