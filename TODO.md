@@ -144,7 +144,7 @@
 - [x] CI/CD improvements implemented
 - [x] Benchmark workflow made manual-only
 - [x] CHANGELOG updated
-- [ ] Tag `v0.2.1`, publish `diagramma-core` + `diagramma-layout`
+- [x] Tag `v0.2.1`, publish `diagramma-core` + `diagramma-layout`
 
 ### v0.2.0 Release Checklist
 
