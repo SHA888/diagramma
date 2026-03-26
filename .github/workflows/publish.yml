@@ -2,7 +2,7 @@ name: Publish (crates.io + npm)
 
 on:
   workflow_run:
-    workflows: ['Rust CI', 'TypeScript CI', 'Benchmark']
+    workflows: ['Rust CI', 'TypeScript CI']
     types:
       - completed
     branches: [main, 'v*']
@@ -27,7 +27,6 @@ jobs:
             const required = [
               { workflow: "Rust CI", job: "rust", label: "Rust CI" },
               { workflow: "TypeScript CI", job: "ts", label: "TypeScript CI" },
-              { workflow: "Benchmark", job: "benchmark", label: "Benchmark" },
             ];
 
             // Get the tag from the ref (remove 'refs/tags/' prefix)
