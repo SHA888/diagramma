@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-03-27
+
+### Fixed
+
+- **Security Vulnerabilities**: Resolved moderate and high severity vulnerabilities in dependencies
+  - Fixed picomatch ReDoS vulnerability (GHSA-c2c7-rcm5-vvqj)
+  - Fixed brace-expansion process hang vulnerability (GHSA-f886-m6hf-6m8v)
+- **CI/CD Improvements**:
+  - Made benchmark workflow manual-only to prevent release delays
+  - Updated publish workflow to only require Rust CI and TypeScript CI
+  - Improved reliability with updated cache actions and toolchain installation
+
+### Changed
+
+- **Dependency Management**: Added pnpm overrides for security patches
+- **Release Process**: Streamlined automated publishing without benchmark dependency
+
 ## [0.2.0] - 2026-03-24
 
 ### Added

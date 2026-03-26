@@ -1,6 +1,6 @@
 [package]
 name = "diagramma-svg"
-description = "SVG generation for diagramma — layout results to themed, interactive SVG output"
+description = "SVG generation for diagramma - layout results to themed, interactive SVG output"
 readme = "README.md"
 keywords = ["diagram", "svg", "rendering", "visualization"]
 categories = ["visualization", "graphics"]
@@ -12,8 +12,8 @@ repository.workspace = true
 authors.workspace = true
 
 [dependencies]
-diagramma-core = { path = "../diagramma-core", version = "0.2.0" }
-diagramma-layout = { path = "../diagramma-layout", version = "0.2.0" }
+diagramma-core = { path = "../diagramma-core", version = "0.2.1" }
+diagramma-layout = { path = "../diagramma-layout", version = "0.2.1" }
 
 [lints]
 workspace = true

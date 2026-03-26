@@ -138,6 +138,14 @@
   - [x] ViewBox contains all elements (property test)
   - [x] Benchmark: layout performance on specs with 10, 50, 200, 1000 nodes
 
+### v0.2.1 Release Checklist
+
+- [x] Security vulnerabilities fixed
+- [x] CI/CD improvements implemented
+- [x] Benchmark workflow made manual-only
+- [x] CHANGELOG updated
+- [ ] Tag `v0.2.1`, publish `diagramma-core` + `diagramma-layout`
+
 ### v0.2.0 Release Checklist
 
 - [x] Flowchart and structural layout implemented
