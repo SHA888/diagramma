@@ -15,7 +15,7 @@ authors.workspace = true
 diagramma-core = { path = "../diagramma-core", version = "0.2.1" }
 
 [dev-dependencies]
-criterion = "0.5"
+criterion = "0.8"
 insta = { version = "1.39.0", features = ["yaml"] }
 proptest = "1.5"
 serde = { version = "1", features = ["derive"] }
