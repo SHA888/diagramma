@@ -439,7 +439,8 @@ mod tests {
         let schema = diagram_spec_schema();
         let schema_obj = schema.as_object().unwrap();
         assert!(schema_obj.contains_key("$schema"));
-        assert!(schema_obj.contains_key("definitions"));
+        // schemars v1.2 uses "$defs" instead of "definitions"
+        assert!(schema_obj.contains_key("$defs") || schema_obj.contains_key("definitions"));
     }
 
     #[test]
