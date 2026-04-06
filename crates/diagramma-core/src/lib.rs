@@ -3,7 +3,7 @@
 //! Defines nodes, edges, containers, diagram specs, and validation helpers
 //! used across the rendering pipeline.
 
-use schemars::{JsonSchema, schema::RootSchema, schema_for};
+use schemars::{JsonSchema, schema_for};
 use serde::{Deserialize, Serialize};
 use smol_str::SmolStr;
 use std::collections::HashSet;
@@ -108,16 +108,11 @@ pub enum NodeShape {
 }
 
 /// Edge style variants.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Default)]
 pub enum EdgeStyle {
+    #[default]
     Solid,
     Dashed,
-}
-
-impl Default for EdgeStyle {
-    fn default() -> Self {
-        Self::Solid
-    }
 }
 
 /// Arrow styles for edges.
@@ -265,8 +260,8 @@ pub type ValidationResult<T> = Result<T, ValidationError>;
 
 /// Produce a JSON schema for `DiagramSpec`.
 #[must_use]
-pub fn diagram_spec_schema() -> RootSchema {
-    schema_for!(DiagramSpec)
+pub fn diagram_spec_schema() -> serde_json::Value {
+    schema_for!(DiagramSpec).into()
 }
 
 /// Validate a diagram specification for structural integrity.
@@ -445,7 +440,9 @@ mod tests {
     #[test]
     fn schema_generation_produces_definitions() {
         let schema = diagram_spec_schema();
-        assert!(schema.definitions.contains_key("Direction"));
+        let schema_obj = schema.as_object().unwrap();
+        assert!(schema_obj.contains_key("$schema"));
+        assert!(schema_obj.contains_key("definitions"));
     }
 
     #[test]
