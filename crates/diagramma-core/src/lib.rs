@@ -116,9 +116,10 @@ pub enum EdgeStyle {
 }
 
 /// Arrow styles for edges.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema, Default)]
 pub enum ArrowStyle {
     Open,
+    #[default]
     Closed,
     None,
 }
@@ -153,12 +154,8 @@ pub struct Edge {
     pub label: Option<SmolStr>,
     #[serde(default)]
     pub style: EdgeStyle,
-    #[serde(default = "default_arrow_style")]
+    #[serde(default)]
     pub arrow: ArrowStyle,
-}
-
-const fn default_arrow_style() -> ArrowStyle {
-    ArrowStyle::Closed
 }
 
 /// Container definition (recursive).
@@ -347,7 +344,7 @@ fn collect_elements(
         match element {
             Element::Node(node) => track_id(&node.id, ids)?,
             Element::Container(container) => {
-                collect_containers(std::slice::from_ref(container), depth, ids)?;
+                collect_containers(std::slice::from_ref(container), depth + 1, ids)?;
             }
         }
     }
@@ -489,7 +486,9 @@ mod tests {
                 edges: vec![],
                 theme: Theme::Auto,
             });
-            let _ = validate_spec(&spec).err();
+            if let Err(err) = validate_spec(&spec) {
+                assert!(matches!(err, ValidationError::DuplicateId(_)), "Expected DuplicateId error");
+            }
         }
     }
 }
