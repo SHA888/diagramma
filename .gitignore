@@ -23,3 +23,6 @@ Thumbs.db
 # Env
 .env
 .env.local
+.skill/
+.cursor/rules/skill-context.md
+.windsurf/rules/skill-context.md

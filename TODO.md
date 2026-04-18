@@ -163,11 +163,11 @@
 
 ### diagramma-svg
 
-- [ ] **Design tokens (embedded)**
-  - [ ] Color ramps: 9 ramps × 7 stops (50, 100, 200, 400, 600, 800, 900)
-  - [ ] Light mode mapping: 50 fill + 600 stroke + 800 title / 600 subtitle
-  - [ ] Dark mode mapping: 800 fill + 200 stroke + 100 title / 200 subtitle
-  - [ ] CSS variable generation for theme switching
+- [x] **Design tokens (embedded)**
+  - [x] Color ramps: 9 ramps × 7 stops (50, 100, 200, 400, 600, 800, 900)
+  - [x] Light mode mapping: 50 fill + 600 stroke + 800 title / 600 subtitle
+  - [x] Dark mode mapping: 800 fill + 200 stroke + 100 title / 200 subtitle
+  - [x] CSS variable generation for theme switching
 - [ ] **SVG elements**
   - [ ] Rect nodes: configurable rx (4 subtle, 8 emphasized, half-height pill)
   - [ ] Diamond nodes (rotated rect)
