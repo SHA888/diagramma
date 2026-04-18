@@ -168,14 +168,14 @@
   - [x] Light mode mapping: 50 fill + 600 stroke + 800 title / 600 subtitle
   - [x] Dark mode mapping: 800 fill + 200 stroke + 100 title / 200 subtitle
   - [x] CSS variable generation for theme switching
-- [ ] **SVG elements**
-  - [ ] Rect nodes: configurable rx (4 subtle, 8 emphasized, half-height pill)
-  - [ ] Diamond nodes (rotated rect)
-  - [ ] Circle/ellipse nodes
-  - [ ] Container rendering (nested rects with labels)
-  - [ ] Text rendering: 14px labels, 12px subtitles, explicit class on every element
-  - [ ] Edge rendering: paths with `fill="none"`, 0.5px stroke
-  - [ ] Arrow markers: open chevron, context-stroke coloring
+- [x] **SVG elements**
+  - [x] Rect nodes: configurable rx (4 subtle, 8 emphasized, half-height pill)
+  - [x] Diamond nodes (rotated rect)
+  - [x] Circle/ellipse nodes
+  - [x] Container rendering (nested rects with labels)
+  - [x] Text rendering: 14px labels, 12px subtitles, explicit class on every element
+  - [x] Edge rendering: paths with `fill="none"`, 0.5px stroke
+  - [x] Arrow markers: open chevron, context-stroke coloring
 - [ ] **Theme system**
   - [ ] `<style>` block with CSS variables for light/dark
   - [ ] `prefers-color-scheme` media query for `theme: auto`

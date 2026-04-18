@@ -2,55 +2,47 @@
 //!
 //! Defines color ramps, theme mappings, and CSS variable generation.
 
+pub use diagramma_core::ColorRamp;
+
 use std::fmt::Write;
 
-/// The 9 color ramps available in the system.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum ColorRamp {
-    Purple,
-    Teal,
-    Coral,
-    Pink,
-    Gray,
-    Blue,
-    Green,
-    Amber,
-    Red,
+/// Extension trait for `ColorRamp` with SVG-specific methods.
+pub trait ColorRampExt {
+    /// Returns the CSS custom property prefix for this ramp.
+    fn css_prefix(self) -> &'static str;
+    /// Returns the color value at a specific stop.
+    fn stop(self, stop: ColorStop) -> &'static str;
 }
 
-impl ColorRamp {
-    /// All available color ramps.
-    pub const ALL: [ColorRamp; 9] = [
-        ColorRamp::Purple,
-        ColorRamp::Teal,
-        ColorRamp::Coral,
-        ColorRamp::Pink,
-        ColorRamp::Gray,
-        ColorRamp::Blue,
-        ColorRamp::Green,
-        ColorRamp::Amber,
-        ColorRamp::Red,
-    ];
+/// All available color ramps.
+pub const COLOR_RAMPS: [ColorRamp; 9] = [
+    ColorRamp::Purple,
+    ColorRamp::Teal,
+    ColorRamp::Coral,
+    ColorRamp::Pink,
+    ColorRamp::Gray,
+    ColorRamp::Blue,
+    ColorRamp::Green,
+    ColorRamp::Amber,
+    ColorRamp::Red,
+];
 
-    /// Returns the CSS custom property prefix for this ramp.
-    #[must_use]
-    pub fn css_prefix(self) -> &'static str {
+impl ColorRampExt for ColorRamp {
+    fn css_prefix(self) -> &'static str {
         match self {
             ColorRamp::Purple => "--dm-purple",
             ColorRamp::Teal => "--dm-teal",
             ColorRamp::Coral => "--dm-coral",
             ColorRamp::Pink => "--dm-pink",
-            ColorRamp::Gray => "--dm-gray",
             ColorRamp::Blue => "--dm-blue",
             ColorRamp::Green => "--dm-green",
             ColorRamp::Amber => "--dm-amber",
             ColorRamp::Red => "--dm-red",
+            _ => "--dm-gray", // Fallback for non_exhaustive enum (includes Gray)
         }
     }
 
-    /// Returns the color value at a specific stop (50, 100, 200, 400, 600, 800, 900).
-    #[must_use]
-    pub fn stop(self, stop: ColorStop) -> &'static str {
+    fn stop(self, stop: ColorStop) -> &'static str {
         // All stop values are pre-calculated based on OKLCH color space adjustments
         // for perceptually uniform lightness scaling
         match (self, stop) {
@@ -134,6 +126,8 @@ impl ColorRamp {
             (ColorRamp::Red, ColorStop::S600) => "#dc2626",
             (ColorRamp::Red, ColorStop::S800) => "#991b1b",
             (ColorRamp::Red, ColorStop::S900) => "#450a0a",
+            // Fallback for non_exhaustive enum
+            _ => "#6b7280", // Gray-500 as fallback
         }
     }
 }
@@ -254,7 +248,7 @@ pub fn generate_css_variables() -> String {
 
     // Light mode root variables
     css.push_str(":root {\n");
-    for ramp in ColorRamp::ALL {
+    for ramp in COLOR_RAMPS {
         for stop in ColorStop::ALL {
             let value = ramp.stop(stop);
             let prefix = ramp.css_prefix();
@@ -265,7 +259,7 @@ pub fn generate_css_variables() -> String {
 
     // Semantic role variables for light mode
     css.push_str("\n  /* Semantic mappings - Light */\n");
-    for ramp in ColorRamp::ALL {
+    for ramp in COLOR_RAMPS {
         let prefix = ramp.css_prefix();
         let _ = writeln!(css, "  {prefix}-fill: var({prefix}-50);");
         let _ = writeln!(css, "  {prefix}-stroke: var({prefix}-600);");
@@ -279,7 +273,7 @@ pub fn generate_css_variables() -> String {
     css.push_str("@media (prefers-color-scheme: dark) {\n");
     css.push_str("  :root {\n");
     css.push_str("    /* Semantic mappings - Dark */\n");
-    for ramp in ColorRamp::ALL {
+    for ramp in COLOR_RAMPS {
         let prefix = ramp.css_prefix();
         let _ = writeln!(css, "    {prefix}-fill: var({prefix}-800);");
         let _ = writeln!(css, "    {prefix}-stroke: var({prefix}-200);");
@@ -293,7 +287,7 @@ pub fn generate_css_variables() -> String {
     // Manual dark mode class override
     css.push_str("\n[data-theme=\"dark\"] {\n");
     css.push_str("  /* Semantic mappings - Dark (manual override) */\n");
-    for ramp in ColorRamp::ALL {
+    for ramp in COLOR_RAMPS {
         let prefix = ramp.css_prefix();
         let _ = writeln!(css, "  {prefix}-fill: var({prefix}-800);");
         let _ = writeln!(css, "  {prefix}-stroke: var({prefix}-200);");
@@ -318,11 +312,11 @@ fn ramp_name(ramp: ColorRamp) -> &'static str {
         ColorRamp::Teal => "teal",
         ColorRamp::Coral => "coral",
         ColorRamp::Pink => "pink",
-        ColorRamp::Gray => "gray",
         ColorRamp::Blue => "blue",
         ColorRamp::Green => "green",
         ColorRamp::Amber => "amber",
         ColorRamp::Red => "red",
+        _ => "gray", // Fallback for non_exhaustive enum (includes Gray)
     }
 }
 
@@ -437,8 +431,9 @@ mod tests {
 
     #[test]
     fn test_all_color_stops_accessible() {
+        use super::ColorRampExt;
         // Verify all 9 ramps have all 7 stops accessible
-        for ramp in ColorRamp::ALL {
+        for ramp in COLOR_RAMPS {
             for stop in ColorStop::ALL {
                 let value = ramp.stop(stop);
                 // Verify it's a valid hex color
