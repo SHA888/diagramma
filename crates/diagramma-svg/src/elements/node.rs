@@ -22,7 +22,6 @@ pub fn render_rect(
     let color = node.color;
     let fill_class = color_class(color, SemanticRole::Fill);
     let stroke_class = color_class(color, SemanticRole::Stroke);
-    let classes = format!("{class_prefix} {fill_class} {stroke_class}");
 
     // Use CSS variables for colors (class-based, not inline styles)
     let style = format!(
@@ -38,7 +37,7 @@ pub fn render_rect(
         layout.width,
         layout.height,
         rx,
-        class_attr(&[&classes]),
+        class_attr(&[class_prefix, &fill_class, &stroke_class]),
         style
     );
 
@@ -71,7 +70,6 @@ pub fn render_diamond(
     let color = node.color;
     let fill_class = color_class(color, SemanticRole::Fill);
     let stroke_class = color_class(color, SemanticRole::Stroke);
-    let classes = format!("{class_prefix} {fill_class} {stroke_class}");
 
     // Calculate diamond points (centered in the layout box)
     let cx = layout.x + layout.width / 2.0;
@@ -101,7 +99,7 @@ pub fn render_diamond(
     let polygon = format!(
         r#"<polygon points="{}"{} style="{}"/>"#,
         points,
-        class_attr(&[&classes]),
+        class_attr(&[class_prefix, &fill_class, &stroke_class]),
         style
     );
 
@@ -122,7 +120,6 @@ pub fn render_circle(
     let color = node.color;
     let fill_class = color_class(color, SemanticRole::Fill);
     let stroke_class = color_class(color, SemanticRole::Stroke);
-    let classes = format!("{class_prefix} {fill_class} {stroke_class}");
 
     let cx = layout.x + layout.width / 2.0;
     let cy = layout.y + layout.height / 2.0;
@@ -142,7 +139,7 @@ pub fn render_circle(
         cy,
         rx,
         ry,
-        class_attr(&[&classes]),
+        class_attr(&[class_prefix, &fill_class, &stroke_class]),
         style
     );
 
@@ -152,39 +149,56 @@ pub fn render_circle(
     format!("{ellipse}{text_content}")
 }
 
+/// Title font size (14px) and subtitle font size (12px)
+const TITLE_SIZE: u32 = 14;
+const SUBTITLE_SIZE: u32 = 12;
+const GAP: f64 = 2.0; // Gap between title and subtitle
+
 /// Renders text for a node (label and subtitle).
 fn render_node_text(node: &Node, layout: &LayoutNode, theme: ThemeMode) -> String {
     let color = node.color;
     let mut result = String::new();
+    let center_x = layout.x + layout.width / 2.0;
+    let node_center_y = layout.y + layout.height / 2.0;
 
-    // Title text (14px)
-    let title_y = if node.subtitle.is_some() {
-        layout.y + layout.height / 2.0 - 4.0 // Slightly above center
+    // Calculate Y positions based on whether we have a subtitle
+    let (title_y, subtitle_y) = if node.subtitle.is_some() {
+        // Two-line layout: position title and subtitle around center
+        // Total text block height ≈ TITLE_SIZE + GAP + SUBTITLE_SIZE = 28px
+        // Title baseline should be slightly above center
+        let title_baseline_offset = (f64::from(TITLE_SIZE) + GAP + f64::from(SUBTITLE_SIZE)) / 2.0
+            - f64::from(TITLE_SIZE) * 0.3; // Adjust for baseline
+        let subtitle_baseline_offset =
+            title_baseline_offset + f64::from(TITLE_SIZE) + GAP - f64::from(SUBTITLE_SIZE) * 0.3;
+        (
+            node_center_y - title_baseline_offset,
+            node_center_y + subtitle_baseline_offset,
+        )
     } else {
-        layout.y + layout.height / 2.0 + 5.0 // Centered vertically (approximate baseline adjustment)
+        // Single line: center the title
+        (text::center_y(layout.y, layout.height, TITLE_SIZE), 0.0)
     };
 
     result.push_str(&text::render_label(
         &node.label,
-        layout.x + layout.width / 2.0,
+        center_x,
         title_y,
         color,
         theme,
         "dm-node-title",
-        14,
+        TITLE_SIZE,
     ));
 
-    // Subtitle text (12px) if present
+    // Subtitle text if present
     if let Some(ref subtitle) = node.subtitle {
-        let subtitle_y = layout.y + layout.height / 2.0 + 14.0; // Below title
         result.push_str(&text::render_label(
             subtitle,
-            layout.x + layout.width / 2.0,
+            center_x,
             subtitle_y,
             color,
             theme,
             "dm-node-subtitle",
-            12,
+            SUBTITLE_SIZE,
         ));
     }
 

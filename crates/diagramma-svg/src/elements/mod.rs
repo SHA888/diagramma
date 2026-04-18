@@ -13,6 +13,7 @@ pub mod text;
 
 /// Renders a layout node to SVG.
 #[must_use]
+#[allow(unreachable_patterns)] // Non-exhaustive enum may add variants in future
 pub fn render_node(
     node: &Node,
     layout: &LayoutNode,
@@ -24,6 +25,9 @@ pub fn render_node(
         NodeShape::Pill => node::render_pill(node, layout, theme, class_prefix),
         NodeShape::Diamond => node::render_diamond(node, layout, theme, class_prefix),
         NodeShape::Circle => node::render_circle(node, layout, theme, class_prefix),
+        // Fallback for non_exhaustive enum - default to Rect (intentionally same as Rect arm)
+        #[allow(clippy::match_same_arms)]
+        _ => node::render_rect(node, layout, theme, class_prefix, 4.0),
     }
 }
 
@@ -75,7 +79,9 @@ pub fn style_attr(styles: &[(&str, &str)]) -> String {
 /// Renders a complete SVG element group.
 #[must_use]
 pub fn render_group(id: &str, content: &str, class: &str) -> String {
-    format!(r#"<g id="{id}" class="{class}">{content}</g>"#)
+    let escaped_id = text::escape_xml(id);
+    let escaped_class = text::escape_xml(class);
+    format!(r#"<g id="{escaped_id}" class="{escaped_class}">{content}</g>"#)
 }
 
 #[cfg(test)]

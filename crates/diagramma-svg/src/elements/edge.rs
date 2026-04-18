@@ -30,14 +30,22 @@ pub fn render_path(
     );
 
     let path = format!(
-        r#"<path d="{}" fill="none"{} style="{}"/>"#,
+        r#"<path d="{}"{} style="{}"/>"#,
         path_data,
         class_attr(&[&classes]),
         style
     );
 
-    // Render arrow head
-    let arrow = render_arrow_head(&edge.arrow_pos, color, theme, class_prefix);
+    // Compute arrow direction from the last path segment
+    let last_idx = edge.path.len() - 1;
+    let second_last_idx = if last_idx > 0 { last_idx - 1 } else { 0 };
+    let direction = Point::new(
+        edge.path[last_idx].x - edge.path[second_last_idx].x,
+        edge.path[last_idx].y - edge.path[second_last_idx].y,
+    );
+
+    // Render arrow head with computed direction
+    let arrow = render_arrow_head(&edge.arrow_pos, &direction, color, theme, class_prefix);
 
     format!("{path}{arrow}")
 }
@@ -63,10 +71,11 @@ pub fn build_path_data(points: &[Point]) -> String {
 
 /// Renders an open chevron arrow head at the specified position.
 ///
-/// The arrow head points in the direction of the last path segment.
+/// The arrow head points in the given direction vector.
 #[must_use]
 pub fn render_arrow_head(
     pos: &Point,
+    direction: &Point,
     color: ColorRamp,
     theme: ThemeMode,
     class_prefix: &str,
@@ -79,40 +88,41 @@ pub fn render_arrow_head(
         css_var(color, SemanticRole::Arrow, theme)
     );
 
+    // Calculate arrow orientation from direction vector
+    let angle = if direction.x == 0.0 && direction.y == 0.0 {
+        0.0_f64 // Default to pointing right if no direction
+    } else {
+        direction.y.atan2(direction.x)
+    };
+
     // Open chevron: two lines forming a V shape
-    // Size: 6px wide, 6px tall (pointing right by default)
+    // Size: 6px wide, 6px tall
     let chevron_size = 6.0;
-    let half_size = chevron_size / 2.0;
+    let wing_angle = std::f64::consts::PI / 6.0; // 30 degrees wing spread
 
-    // Points for the open chevron (left-pointing, can be rotated if needed)
-    let p1 = Point::new(pos.x - chevron_size, pos.y - half_size);
-    let p2 = Point::new(pos.x, pos.y);
-    let p3 = Point::new(pos.x - chevron_size, pos.y + half_size);
+    // Calculate arrow tip and wing points based on angle
+    let tip_x = pos.x;
+    let tip_y = pos.y;
+    let base_x = tip_x - chevron_size * angle.cos();
+    let base_y = tip_y - chevron_size * angle.sin();
 
-    let path_data = format!(
-        "M {:.1},{:.1} L {:.1},{:.1} L {:.1},{:.1}",
-        p1.x, p1.y, p2.x, p2.y, p3.x, p3.y
-    );
+    // Wing 1: rotated +30 degrees from direction
+    let wing1_x = base_x + chevron_size * 0.5 * (angle + wing_angle).sin();
+    let wing1_y = base_y - chevron_size * 0.5 * (angle + wing_angle).cos();
+
+    // Wing 2: rotated -30 degrees from direction
+    let wing2_x = base_x - chevron_size * 0.5 * (angle - wing_angle).sin();
+    let wing2_y = base_y + chevron_size * 0.5 * (angle - wing_angle).cos();
+
+    let path_data =
+        format!("M {wing1_x:.1},{wing1_y:.1} L {tip_x:.1},{tip_y:.1} L {wing2_x:.1},{wing2_y:.1}");
 
     format!(
-        r#"<path d="{}" fill="none"{} style="{}"/>"#,
+        r#"<path d="{}"{} style="{}"/>"#,
         path_data,
         class_attr(&[&classes]),
         style
     )
-}
-
-/// Renders an orthogonal edge with right-angle bends.
-#[must_use]
-pub fn render_orthogonal(
-    edge: &LayoutEdge,
-    color: ColorRamp,
-    theme: ThemeMode,
-    class_prefix: &str,
-) -> String {
-    // For orthogonal edges, the path is already routed with L-bends
-    // Just render it the same way as a regular path
-    render_path(edge, color, theme, class_prefix)
 }
 
 /// Renders a straight (direct) edge.
@@ -124,8 +134,10 @@ pub fn render_direct(
     theme: ThemeMode,
     class_prefix: &str,
 ) -> String {
+    // Generate a unique-ish id based on coordinates to avoid collisions
+    let id = format!("edge_{:.0}_{:.0}_{:.0}_{:.0}", from.x, from.y, to.x, to.y);
     let edge = LayoutEdge {
-        id: "direct".to_string(),
+        id,
         path: vec![*from, *to],
         arrow_pos: *to,
     };
@@ -197,7 +209,8 @@ mod tests {
         let svg = render_path(&edge, ColorRamp::Blue, ThemeMode::Light, "dm");
         assert!(svg.contains("<path"));
         assert!(svg.contains('d'));
-        assert!(svg.contains(r#"fill="none""#));
+        // fill: none is now only in the style attribute
+        assert!(svg.contains("fill: none"));
         assert!(svg.contains("stroke-width: 0.5"));
     }
 
@@ -235,9 +248,11 @@ mod tests {
     #[test]
     fn test_render_arrow_head_produces_chevron() {
         let pos = Point::new(100.0, 50.0);
-        let svg = render_arrow_head(&pos, ColorRamp::Teal, ThemeMode::Light, "dm");
+        let direction = Point::new(1.0, 0.0); // Pointing right
+        let svg = render_arrow_head(&pos, &direction, ColorRamp::Teal, ThemeMode::Light, "dm");
         assert!(svg.contains("<path"));
-        assert!(svg.contains(r#"fill="none""#));
+        // fill: none is now only in the style attribute
+        assert!(svg.contains("fill: none"));
         // Should be an open chevron (two line segments)
         assert!(svg.contains("M "));
         assert!(svg.contains(" L "));

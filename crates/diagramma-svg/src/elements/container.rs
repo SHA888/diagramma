@@ -26,7 +26,6 @@ pub fn render(
 ) -> String {
     let fill_class = color_class(color, SemanticRole::Fill);
     let stroke_class = color_class(color, SemanticRole::Stroke);
-    let classes = format!("{class_prefix} {fill_class} {stroke_class} dm-container");
 
     // Container background rect with subtle styling
     let style = format!(
@@ -41,7 +40,7 @@ pub fn render(
         container.y,
         container.width,
         container.height,
-        class_attr(&[&classes]),
+        class_attr(&[class_prefix, &fill_class, &stroke_class, "dm-container"]),
         style
     );
 
