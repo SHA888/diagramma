@@ -39,14 +39,14 @@ jobs:
               const branch = context.payload.workflow_run.head_branch;
               const commitSha = context.payload.workflow_run.head_sha;
               console.log(`Triggered by workflow: ${triggeringWorkflow} on branch: ${branch}, sha: ${commitSha}`);
-              
+
               // Only proceed if this is one of our required workflows AND we're on a tag
               if (!required.find(r => r.workflow === triggeringWorkflow) || !branch.startsWith('v')) {
                 console.log('Not a required workflow or not on a tag, skipping publish');
                 core.setOutput('should-publish', 'false');
                 return;
               }
-              
+
               // Check all required workflows have completed for this commit
               const {owner, repo} = context.repo;
               const response = await github.paginate(github.rest.actions.listWorkflowRunsForRepo, {
