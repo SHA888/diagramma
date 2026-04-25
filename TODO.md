@@ -176,11 +176,11 @@
   - [x] Text rendering: 14px labels, 12px subtitles, explicit class on every element
   - [x] Edge rendering: paths with `fill="none"`, 0.5px stroke
   - [x] Arrow markers: open chevron, context-stroke coloring
-- [ ] **Theme system**
-  - [ ] `<style>` block with CSS variables for light/dark
-  - [ ] `prefers-color-scheme` media query for `theme: auto`
-  - [ ] Class-based color application (not inline styles)
-  - [ ] Text-on-colored-background: same-ramp 800/900 stop (never black)
+- [x] **Theme system**
+  - [x] `<style>` block with CSS variables for light/dark
+  - [x] `prefers-color-scheme` media query for `theme: auto`
+  - [x] Class-based color application (not inline styles)
+  - [x] Text-on-colored-background: same-ramp 800/900 stop (never black)
 - [ ] **SVG structure**
   - [ ] ViewBox from layout result
   - [ ] `<defs>` section for markers and reusable elements
