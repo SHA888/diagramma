@@ -4,6 +4,7 @@
 //! with dark/light mode support and clickable elements.
 
 pub mod elements;
+pub mod theme;
 pub mod tokens;
 
 /// Library version.

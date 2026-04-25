@@ -2,6 +2,7 @@
 //!
 //! Provides rendering functions for nodes, edges, containers, and text elements.
 
+use crate::theme::StyleMode;
 use crate::tokens::{ColorRamp, ThemeMode};
 use diagramma_core::{Node, NodeShape};
 use diagramma_layout::{LayoutContainer, LayoutEdge, LayoutNode};
@@ -19,15 +20,16 @@ pub fn render_node(
     layout: &LayoutNode,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
     match node.shape {
-        NodeShape::Rect => node::render_rect(node, layout, theme, class_prefix, 4.0),
-        NodeShape::Pill => node::render_pill(node, layout, theme, class_prefix),
-        NodeShape::Diamond => node::render_diamond(node, layout, theme, class_prefix),
-        NodeShape::Circle => node::render_circle(node, layout, theme, class_prefix),
+        NodeShape::Rect => node::render_rect(node, layout, theme, class_prefix, 4.0, style_mode),
+        NodeShape::Pill => node::render_pill(node, layout, theme, class_prefix, style_mode),
+        NodeShape::Diamond => node::render_diamond(node, layout, theme, class_prefix, style_mode),
+        NodeShape::Circle => node::render_circle(node, layout, theme, class_prefix, style_mode),
         // Fallback for non_exhaustive enum - default to Rect (intentionally same as Rect arm)
         #[allow(clippy::match_same_arms)]
-        _ => node::render_rect(node, layout, theme, class_prefix, 4.0),
+        _ => node::render_rect(node, layout, theme, class_prefix, 4.0, style_mode),
     }
 }
 
@@ -38,8 +40,9 @@ pub fn render_edge(
     color: ColorRamp,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
-    edge::render_path(edge, color, theme, class_prefix)
+    edge::render_path(edge, color, theme, class_prefix, style_mode)
 }
 
 /// Renders a layout container to SVG.
@@ -51,8 +54,17 @@ pub fn render_container(
     theme: ThemeMode,
     class_prefix: &str,
     children_svg: &str,
+    style_mode: StyleMode,
 ) -> String {
-    container::render(container, label, color, theme, class_prefix, children_svg)
+    container::render(
+        container,
+        label,
+        color,
+        theme,
+        class_prefix,
+        children_svg,
+        style_mode,
+    )
 }
 
 /// Helper to format a CSS class attribute.
@@ -113,7 +125,7 @@ mod tests {
     fn test_render_rect_produces_svg() {
         let node = test_node();
         let layout = test_layout();
-        let svg = render_node(&node, &layout, ThemeMode::Light, "dm");
+        let svg = render_node(&node, &layout, ThemeMode::Light, "dm", StyleMode::Inline);
         assert!(svg.contains("<rect"));
         assert!(svg.contains(r#"x="10.0""#));
         assert!(svg.contains(r#"y="20.0""#));

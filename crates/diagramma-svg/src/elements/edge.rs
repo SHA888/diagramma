@@ -3,6 +3,7 @@
 //! Implements path rendering with fill="none" and 0.5px stroke, plus arrow markers.
 
 use crate::elements::{class_attr, text};
+use crate::theme::StyleMode;
 use crate::tokens::{ColorRamp, SemanticRole, ThemeMode, color_class, css_var};
 use diagramma_layout::{LayoutEdge, Point};
 
@@ -15,6 +16,7 @@ pub fn render_path(
     color: ColorRamp,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
     if edge.path.len() < 2 {
         return String::new(); // Need at least 2 points for a path
@@ -24,13 +26,17 @@ pub fn render_path(
     let stroke_class = color_class(color, SemanticRole::Edge);
     let classes = format!("{class_prefix} {stroke_class} dm-edge");
 
-    let style = format!(
-        "fill: none; stroke: var({}); stroke-width: 0.5",
-        css_var(color, SemanticRole::Edge, theme)
-    );
+    let style = if style_mode.is_inline() {
+        format!(
+            r#" style="fill: none; stroke: var({}); stroke-width: 0.5""#,
+            css_var(color, SemanticRole::Edge, theme)
+        )
+    } else {
+        String::new()
+    };
 
     let path = format!(
-        r#"<path d="{}"{} style="{}"/>"#,
+        r#"<path d="{}"{}{}/>"#,
         path_data,
         class_attr(&[&classes]),
         style
@@ -45,7 +51,14 @@ pub fn render_path(
     );
 
     // Render arrow head with computed direction
-    let arrow = render_arrow_head(&edge.arrow_pos, &direction, color, theme, class_prefix);
+    let arrow = render_arrow_head(
+        &edge.arrow_pos,
+        &direction,
+        color,
+        theme,
+        class_prefix,
+        style_mode,
+    );
 
     format!("{path}{arrow}")
 }
@@ -79,14 +92,19 @@ pub fn render_arrow_head(
     color: ColorRamp,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
     let arrow_class = color_class(color, SemanticRole::Arrow);
     let classes = format!("{class_prefix} {arrow_class} dm-arrow");
 
-    let style = format!(
-        "fill: none; stroke: var({}); stroke-width: 0.5",
-        css_var(color, SemanticRole::Arrow, theme)
-    );
+    let style = if style_mode.is_inline() {
+        format!(
+            r#" style="fill: none; stroke: var({}); stroke-width: 0.5""#,
+            css_var(color, SemanticRole::Arrow, theme)
+        )
+    } else {
+        String::new()
+    };
 
     // Calculate arrow orientation from direction vector
     let angle = if direction.x == 0.0 && direction.y == 0.0 {
@@ -118,7 +136,7 @@ pub fn render_arrow_head(
         format!("M {wing1_x:.1},{wing1_y:.1} L {tip_x:.1},{tip_y:.1} L {wing2_x:.1},{wing2_y:.1}");
 
     format!(
-        r#"<path d="{}"{} style="{}"/>"#,
+        r#"<path d="{}"{}{}/>"#,
         path_data,
         class_attr(&[&classes]),
         style
@@ -133,6 +151,7 @@ pub fn render_direct(
     color: ColorRamp,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
     // Generate a unique-ish id based on coordinates to avoid collisions
     let id = format!("edge_{:.0}_{:.0}_{:.0}_{:.0}", from.x, from.y, to.x, to.y);
@@ -141,7 +160,7 @@ pub fn render_direct(
         path: vec![*from, *to],
         arrow_pos: *to,
     };
-    render_path(&edge, color, theme, class_prefix)
+    render_path(&edge, color, theme, class_prefix, style_mode)
 }
 
 /// Renders an edge label positioned along the path.
@@ -206,7 +225,13 @@ mod tests {
     #[test]
     fn test_render_path_produces_svg() {
         let edge = test_edge();
-        let svg = render_path(&edge, ColorRamp::Blue, ThemeMode::Light, "dm");
+        let svg = render_path(
+            &edge,
+            ColorRamp::Blue,
+            ThemeMode::Light,
+            "dm",
+            StyleMode::Inline,
+        );
         assert!(svg.contains("<path"));
         assert!(svg.contains('d'));
         // fill: none is now only in the style attribute
@@ -241,7 +266,13 @@ mod tests {
     #[test]
     fn test_render_path_uses_css_variables() {
         let edge = test_edge();
-        let svg = render_path(&edge, ColorRamp::Blue, ThemeMode::Light, "dm");
+        let svg = render_path(
+            &edge,
+            ColorRamp::Blue,
+            ThemeMode::Light,
+            "dm",
+            StyleMode::Inline,
+        );
         assert!(svg.contains("var(--dm-blue-600)"));
     }
 
@@ -249,7 +280,14 @@ mod tests {
     fn test_render_arrow_head_produces_chevron() {
         let pos = Point::new(100.0, 50.0);
         let direction = Point::new(1.0, 0.0); // Pointing right
-        let svg = render_arrow_head(&pos, &direction, ColorRamp::Teal, ThemeMode::Light, "dm");
+        let svg = render_arrow_head(
+            &pos,
+            &direction,
+            ColorRamp::Teal,
+            ThemeMode::Light,
+            "dm",
+            StyleMode::Inline,
+        );
         assert!(svg.contains("<path"));
         // fill: none is now only in the style attribute
         assert!(svg.contains("fill: none"));
@@ -262,7 +300,14 @@ mod tests {
     fn test_render_direct_creates_straight_path() {
         let from = Point::new(0.0, 0.0);
         let to = Point::new(100.0, 0.0);
-        let svg = render_direct(&from, &to, ColorRamp::Gray, ThemeMode::Light, "dm");
+        let svg = render_direct(
+            &from,
+            &to,
+            ColorRamp::Gray,
+            ThemeMode::Light,
+            "dm",
+            StyleMode::Inline,
+        );
         assert!(svg.contains("M 0.0,0.0"));
         assert!(svg.contains("L 100.0,0.0"));
     }
@@ -297,7 +342,13 @@ mod tests {
     #[test]
     fn test_render_path_includes_arrow() {
         let edge = test_edge();
-        let svg = render_path(&edge, ColorRamp::Blue, ThemeMode::Light, "dm");
+        let svg = render_path(
+            &edge,
+            ColorRamp::Blue,
+            ThemeMode::Light,
+            "dm",
+            StyleMode::Inline,
+        );
         // Should contain two paths: one for the edge, one for the arrow
         let path_count = svg.matches("<path").count();
         assert_eq!(path_count, 2);
@@ -306,7 +357,13 @@ mod tests {
     #[test]
     fn test_render_edge_uses_class_based_coloring() {
         let edge = test_edge();
-        let svg = render_path(&edge, ColorRamp::Green, ThemeMode::Light, "dm");
+        let svg = render_path(
+            &edge,
+            ColorRamp::Green,
+            ThemeMode::Light,
+            "dm",
+            StyleMode::Inline,
+        );
         assert!(svg.contains("dm-green-edge"));
         assert!(svg.contains("dm-green-arrow"));
     }

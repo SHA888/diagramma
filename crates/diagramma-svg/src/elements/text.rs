@@ -3,6 +3,7 @@
 //! Implements themed text rendering with proper CSS class application.
 
 use crate::elements::class_attr;
+use crate::theme::StyleMode;
 use crate::tokens::{ColorRamp, SemanticRole, ThemeMode, css_var};
 
 /// Renders a text label with specified styling.
@@ -38,6 +39,42 @@ pub fn render_label(
         font_size,
         class_attr(&[&classes]),
         text_color,
+        escaped_text
+    )
+}
+
+/// Renders a text label for text on colored backgrounds.
+///
+/// Uses `TextOnColor` semantic role (same-ramp 800/900 stop, never black)
+/// for high contrast on filled shapes.
+#[must_use]
+#[allow(clippy::too_many_arguments)]
+pub fn render_label_on_color(
+    text: &str,
+    x: f64,
+    y: f64,
+    text_color_var: &str,
+    text_color_class: &str,
+    class: &str,
+    font_size: u32,
+    style_mode: StyleMode,
+) -> String {
+    let escaped_text = escape_xml(text);
+    let classes = format!("{class} dm-text {text_color_class}");
+
+    let style = if style_mode.is_inline() {
+        format!(r#" style="fill: var({text_color_var})""#)
+    } else {
+        String::new()
+    };
+
+    format!(
+        r#"<text x="{:.1}" y="{:.1}" text-anchor="middle" font-size="{}px"{}{}>{}</text>"#,
+        x,
+        y,
+        font_size,
+        class_attr(&[&classes]),
+        style,
         escaped_text
     )
 }

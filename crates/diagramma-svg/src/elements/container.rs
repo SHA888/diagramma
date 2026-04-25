@@ -3,6 +3,7 @@
 //! Implements themed container rendering with background and border.
 
 use crate::elements::{class_attr, text};
+use crate::theme::StyleMode;
 use crate::tokens::{ColorRamp, SemanticRole, ThemeMode, color_class, css_var};
 use diagramma_layout::LayoutContainer;
 
@@ -23,19 +24,24 @@ pub fn render(
     theme: ThemeMode,
     class_prefix: &str,
     children_svg: &str,
+    style_mode: StyleMode,
 ) -> String {
     let fill_class = color_class(color, SemanticRole::Fill);
     let stroke_class = color_class(color, SemanticRole::Stroke);
 
     // Container background rect with subtle styling
-    let style = format!(
-        "fill: var({}); stroke: var({}); stroke-width: 0.5; stroke-dasharray: 2,2",
-        css_var(color, SemanticRole::Fill, theme),
-        css_var(color, SemanticRole::Stroke, theme)
-    );
+    let style = if style_mode.is_inline() {
+        format!(
+            r#" style="fill: var({}); stroke: var({}); stroke-width: 0.5; stroke-dasharray: 2,2""#,
+            css_var(color, SemanticRole::Fill, theme),
+            css_var(color, SemanticRole::Stroke, theme)
+        )
+    } else {
+        String::new()
+    };
 
     let rect = format!(
-        r#"<rect x="{:.1}" y="{:.1}" width="{:.1}" height="{:.1}" rx="4"{} style="{}"/>"#,
+        r#"<rect x="{:.1}" y="{:.1}" width="{:.1}" height="{:.1}" rx="4"{}{}/>"#,
         container.x,
         container.y,
         container.width,
@@ -63,8 +69,9 @@ pub fn render_simple(
     color: ColorRamp,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
-    render(container, label, color, theme, class_prefix, "")
+    render(container, label, color, theme, class_prefix, "", style_mode)
 }
 
 /// Renders a nested container structure recursively.
@@ -76,6 +83,7 @@ pub fn render_nested<F>(
     theme: ThemeMode,
     class_prefix: &str,
     render_child: &mut F,
+    style_mode: StyleMode,
 ) -> String
 where
     F: FnMut(&diagramma_layout::LayoutElement) -> String,
@@ -87,7 +95,15 @@ where
         .map(render_child)
         .collect::<String>();
 
-    render(container, label, color, theme, class_prefix, &children_svg)
+    render(
+        container,
+        label,
+        color,
+        theme,
+        class_prefix,
+        &children_svg,
+        style_mode,
+    )
 }
 
 #[cfg(test)]
@@ -122,6 +138,7 @@ mod tests {
             ColorRamp::Blue,
             ThemeMode::Light,
             "dm",
+            StyleMode::Inline,
         );
         assert!(svg.contains("<rect"));
         assert!(svg.contains("<text"));
@@ -138,6 +155,7 @@ mod tests {
             ColorRamp::Blue,
             ThemeMode::Light,
             "dm",
+            StyleMode::Inline,
         );
         assert!(svg.contains(r#"x="10.0""#));
         assert!(svg.contains(r#"y="20.0""#));
@@ -154,6 +172,7 @@ mod tests {
             ColorRamp::Teal,
             ThemeMode::Light,
             "dm",
+            StyleMode::Inline,
         );
         assert!(svg.contains("var(--dm-teal-50)")); // fill
         assert!(svg.contains("var(--dm-teal-600)")); // stroke
@@ -168,6 +187,7 @@ mod tests {
             ColorRamp::Blue,
             ThemeMode::Light,
             "dm",
+            StyleMode::Inline,
         );
         assert!(svg.contains("stroke-dasharray: 2,2"));
     }
@@ -181,6 +201,7 @@ mod tests {
             ColorRamp::Blue,
             ThemeMode::Light,
             "dm",
+            StyleMode::Inline,
         );
         assert!(svg.contains(r#"rx="4""#));
     }
@@ -194,6 +215,7 @@ mod tests {
             ColorRamp::Blue,
             ThemeMode::Light,
             "dm",
+            StyleMode::Inline,
         );
         // Label should be centered horizontally (x=110) and near top (y≈38)
         assert!(svg.contains(r#"x="110.0""#));
@@ -208,6 +230,7 @@ mod tests {
             ColorRamp::Blue,
             ThemeMode::Light,
             "dm",
+            StyleMode::Inline,
         );
         assert!(svg.starts_with("<g"));
         assert!(svg.ends_with("</g>"));
@@ -224,6 +247,7 @@ mod tests {
             ThemeMode::Light,
             "dm",
             children_svg,
+            StyleMode::Inline,
         );
         assert!(svg.contains(r#"<rect x="30" y="50""#));
     }
@@ -237,6 +261,7 @@ mod tests {
             ColorRamp::Purple,
             ThemeMode::Light,
             "dm",
+            StyleMode::Inline,
         );
         assert!(svg.contains("dm-purple-fill"));
         assert!(svg.contains("dm-purple-stroke"));
@@ -251,6 +276,7 @@ mod tests {
             ColorRamp::Blue,
             ThemeMode::Dark,
             "dm",
+            StyleMode::Inline,
         );
         assert!(svg.contains("var(--dm-blue-800)")); // fill in dark
         assert!(svg.contains("var(--dm-blue-200)")); // stroke in dark

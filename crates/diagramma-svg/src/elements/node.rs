@@ -3,6 +3,7 @@
 //! Implements themed rendering for all node shapes with proper CSS class application.
 
 use crate::elements::{class_attr, text};
+use crate::theme::StyleMode;
 use crate::tokens::{SemanticRole, ThemeMode, color_class, css_var};
 use diagramma_core::Node;
 use diagramma_layout::LayoutNode;
@@ -18,20 +19,24 @@ pub fn render_rect(
     theme: ThemeMode,
     class_prefix: &str,
     rx: f64,
+    style_mode: StyleMode,
 ) -> String {
     let color = node.color;
     let fill_class = color_class(color, SemanticRole::Fill);
     let stroke_class = color_class(color, SemanticRole::Stroke);
 
-    // Use CSS variables for colors (class-based, not inline styles)
-    let style = format!(
-        "fill: var({}); stroke: var({}); stroke-width: 0.5",
-        css_var(color, SemanticRole::Fill, theme),
-        css_var(color, SemanticRole::Stroke, theme)
-    );
+    let style = if style_mode.is_inline() {
+        format!(
+            r#" style="fill: var({}); stroke: var({}); stroke-width: 0.5""#,
+            css_var(color, SemanticRole::Fill, theme),
+            css_var(color, SemanticRole::Stroke, theme)
+        )
+    } else {
+        String::new()
+    };
 
     let rect = format!(
-        r#"<rect x="{:.1}" y="{:.1}" width="{:.1}" height="{:.1}" rx="{:.1}"{} style="{}"/>"#,
+        r#"<rect x="{:.1}" y="{:.1}" width="{:.1}" height="{:.1}" rx="{:.1}"{}{}/>"#,
         layout.x,
         layout.y,
         layout.width,
@@ -42,7 +47,7 @@ pub fn render_rect(
     );
 
     // Render text elements
-    let text_content = render_node_text(node, layout, theme);
+    let text_content = render_node_text(node, layout, theme, style_mode);
 
     format!("{rect}{text_content}")
 }
@@ -54,9 +59,10 @@ pub fn render_pill(
     layout: &LayoutNode,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
     let rx = layout.height / 2.0;
-    render_rect(node, layout, theme, class_prefix, rx)
+    render_rect(node, layout, theme, class_prefix, rx, style_mode)
 }
 
 /// Renders a diamond-shaped node (rotated square).
@@ -66,6 +72,7 @@ pub fn render_diamond(
     layout: &LayoutNode,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
     let color = node.color;
     let fill_class = color_class(color, SemanticRole::Fill);
@@ -90,21 +97,25 @@ pub fn render_diamond(
         cy // left
     );
 
-    let style = format!(
-        "fill: var({}); stroke: var({}); stroke-width: 0.5",
-        css_var(color, SemanticRole::Fill, theme),
-        css_var(color, SemanticRole::Stroke, theme)
-    );
+    let style = if style_mode.is_inline() {
+        format!(
+            r#" style="fill: var({}); stroke: var({}); stroke-width: 0.5""#,
+            css_var(color, SemanticRole::Fill, theme),
+            css_var(color, SemanticRole::Stroke, theme)
+        )
+    } else {
+        String::new()
+    };
 
     let polygon = format!(
-        r#"<polygon points="{}"{} style="{}"/>"#,
+        r#"<polygon points="{}"{}{}/>"#,
         points,
         class_attr(&[class_prefix, &fill_class, &stroke_class]),
         style
     );
 
     // Render text elements (centered)
-    let text_content = render_node_text(node, layout, theme);
+    let text_content = render_node_text(node, layout, theme, style_mode);
 
     format!("{polygon}{text_content}")
 }
@@ -116,6 +127,7 @@ pub fn render_circle(
     layout: &LayoutNode,
     theme: ThemeMode,
     class_prefix: &str,
+    style_mode: StyleMode,
 ) -> String {
     let color = node.color;
     let fill_class = color_class(color, SemanticRole::Fill);
@@ -126,15 +138,19 @@ pub fn render_circle(
     let rx = layout.width / 2.0;
     let ry = layout.height / 2.0;
 
-    let style = format!(
-        "fill: var({}); stroke: var({}); stroke-width: 0.5",
-        css_var(color, SemanticRole::Fill, theme),
-        css_var(color, SemanticRole::Stroke, theme)
-    );
+    let style = if style_mode.is_inline() {
+        format!(
+            r#" style="fill: var({}); stroke: var({}); stroke-width: 0.5""#,
+            css_var(color, SemanticRole::Fill, theme),
+            css_var(color, SemanticRole::Stroke, theme)
+        )
+    } else {
+        String::new()
+    };
 
     // Use ellipse for flexibility (circle when width == height)
     let ellipse = format!(
-        r#"<ellipse cx="{:.1}" cy="{:.1}" rx="{:.1}" ry="{:.1}"{} style="{}"/>"#,
+        r#"<ellipse cx="{:.1}" cy="{:.1}" rx="{:.1}" ry="{:.1}"{}{}/>"#,
         cx,
         cy,
         rx,
@@ -144,7 +160,7 @@ pub fn render_circle(
     );
 
     // Render text elements
-    let text_content = render_node_text(node, layout, theme);
+    let text_content = render_node_text(node, layout, theme, style_mode);
 
     format!("{ellipse}{text_content}")
 }
@@ -155,7 +171,12 @@ const SUBTITLE_SIZE: u32 = 12;
 const GAP: f64 = 2.0; // Gap between title and subtitle
 
 /// Renders text for a node (label and subtitle).
-fn render_node_text(node: &Node, layout: &LayoutNode, theme: ThemeMode) -> String {
+fn render_node_text(
+    node: &Node,
+    layout: &LayoutNode,
+    theme: ThemeMode,
+    style_mode: StyleMode,
+) -> String {
     let color = node.color;
     let mut result = String::new();
     let center_x = layout.x + layout.width / 2.0;
@@ -179,26 +200,37 @@ fn render_node_text(node: &Node, layout: &LayoutNode, theme: ThemeMode) -> Strin
         (text::center_y(layout.y, layout.height, TITLE_SIZE), 0.0)
     };
 
-    result.push_str(&text::render_label(
+    // Text sits on colored background → use TextOnColor for same-ramp contrast
+    // (never black; always from the node's own ramp for visual harmony)
+    let text_color = if style_mode.is_inline() {
+        css_var(color, SemanticRole::TextOnColor, theme)
+    } else {
+        String::new()
+    };
+    let text_class = color_class(color, SemanticRole::TextOnColor);
+
+    result.push_str(&text::render_label_on_color(
         &node.label,
         center_x,
         title_y,
-        color,
-        theme,
+        &text_color,
+        &text_class,
         "dm-node-title",
         TITLE_SIZE,
+        style_mode,
     ));
 
     // Subtitle text if present
     if let Some(ref subtitle) = node.subtitle {
-        result.push_str(&text::render_label(
+        result.push_str(&text::render_label_on_color(
             subtitle,
             center_x,
             subtitle_y,
-            color,
-            theme,
+            &text_color,
+            &text_class,
             "dm-node-subtitle",
             SUBTITLE_SIZE,
+            style_mode,
         ));
     }
 
@@ -234,7 +266,14 @@ mod tests {
     fn test_render_rect_includes_position() {
         let node = test_node();
         let layout = test_layout();
-        let svg = render_rect(&node, &layout, ThemeMode::Light, "dm", 4.0);
+        let svg = render_rect(
+            &node,
+            &layout,
+            ThemeMode::Light,
+            "dm",
+            4.0,
+            StyleMode::Inline,
+        );
         assert!(svg.contains(r#"x="10.0""#));
         assert!(svg.contains(r#"y="20.0""#));
         assert!(svg.contains(r#"width="100.0""#));
@@ -245,7 +284,14 @@ mod tests {
     fn test_render_rect_uses_css_variables() {
         let node = test_node();
         let layout = test_layout();
-        let svg = render_rect(&node, &layout, ThemeMode::Light, "dm", 4.0);
+        let svg = render_rect(
+            &node,
+            &layout,
+            ThemeMode::Light,
+            "dm",
+            4.0,
+            StyleMode::Inline,
+        );
         assert!(svg.contains("var(--dm-blue-50)")); // fill
         assert!(svg.contains("var(--dm-blue-600)")); // stroke
     }
@@ -254,7 +300,7 @@ mod tests {
     fn test_render_pill_uses_half_height_radius() {
         let node = test_node();
         let layout = test_layout();
-        let svg = render_pill(&node, &layout, ThemeMode::Light, "dm");
+        let svg = render_pill(&node, &layout, ThemeMode::Light, "dm", StyleMode::Inline);
         assert!(svg.contains(r#"rx="25.0""#)); // 50/2 = 25
     }
 
@@ -262,7 +308,7 @@ mod tests {
     fn test_render_diamond_produces_polygon() {
         let node = test_node();
         let layout = test_layout();
-        let svg = render_diamond(&node, &layout, ThemeMode::Light, "dm");
+        let svg = render_diamond(&node, &layout, ThemeMode::Light, "dm", StyleMode::Inline);
         assert!(svg.contains("<polygon"));
         assert!(svg.contains("points="));
         // Should have 4 points (8 coordinates)
@@ -276,7 +322,7 @@ mod tests {
     fn test_render_circle_produces_ellipse() {
         let node = test_node();
         let layout = test_layout();
-        let svg = render_circle(&node, &layout, ThemeMode::Light, "dm");
+        let svg = render_circle(&node, &layout, ThemeMode::Light, "dm", StyleMode::Inline);
         assert!(svg.contains("<ellipse"));
         assert!(svg.contains(r#"cx="60.0""#)); // 10 + 100/2
         assert!(svg.contains(r#"cy="45.0""#)); // 20 + 50/2
@@ -288,7 +334,14 @@ mod tests {
     fn test_render_rect_includes_text() {
         let node = test_node();
         let layout = test_layout();
-        let svg = render_rect(&node, &layout, ThemeMode::Light, "dm", 4.0);
+        let svg = render_rect(
+            &node,
+            &layout,
+            ThemeMode::Light,
+            "dm",
+            4.0,
+            StyleMode::Inline,
+        );
         assert!(svg.contains("<text"));
         assert!(svg.contains("Test Node"));
     }
@@ -298,7 +351,14 @@ mod tests {
         let mut node = test_node();
         node.subtitle = Some("Subtitle".into());
         let layout = test_layout();
-        let svg = render_rect(&node, &layout, ThemeMode::Light, "dm", 4.0);
+        let svg = render_rect(
+            &node,
+            &layout,
+            ThemeMode::Light,
+            "dm",
+            4.0,
+            StyleMode::Inline,
+        );
         assert!(svg.contains("Test Node"));
         assert!(svg.contains("Subtitle"));
         // Should have two text elements
@@ -310,8 +370,22 @@ mod tests {
     fn test_emphasized_rect_uses_larger_radius() {
         let node = test_node();
         let layout = test_layout();
-        let subtle = render_rect(&node, &layout, ThemeMode::Light, "dm", 4.0);
-        let emphasized = render_rect(&node, &layout, ThemeMode::Light, "dm", 8.0);
+        let subtle = render_rect(
+            &node,
+            &layout,
+            ThemeMode::Light,
+            "dm",
+            4.0,
+            StyleMode::Inline,
+        );
+        let emphasized = render_rect(
+            &node,
+            &layout,
+            ThemeMode::Light,
+            "dm",
+            8.0,
+            StyleMode::Inline,
+        );
         assert!(subtle.contains(r#"rx="4.0""#));
         assert!(emphasized.contains(r#"rx="8.0""#));
     }
